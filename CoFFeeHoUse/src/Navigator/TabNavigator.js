@@ -12,8 +12,8 @@ const Tab = createBottomTabNavigator();
 const TabNavigator = () => {
   return (
     <Tab.Navigator
-      tabBarOptions={{
-        activeTintColor: 'brown',
+      screenOptions={{
+        tabBarActiveTintColor: 'brown',
         labelStyle: {
           fontSize: 12,
         },
