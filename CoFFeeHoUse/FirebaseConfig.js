@@ -1,15 +1,21 @@
-import auth from '@react-native-firebase/auth';
-import firebase from '@react-native-firebase/app';
+// import auth from '@react-native-firebase/auth';
+// import firebase from '@react-native-firebase/app';
 
-const firebaseConfig = {
-  apiKey: 'AIzaSyB9GDKfGX6AO6Zpg5laV7RexyKYHSkUbkI',
-  authDomain: 'coffee-house-67328.firebaseapp.com',
-  projectId: 'coffee-house-67328',
-};
+// console.log('Initializing Firebase...');
 
-if (!firebase.apps.length) {
-  firebase.initializeApp(firebaseConfig);
-}
+// const firebaseConfig = {
+//   apiKey: 'AIzaSyB9GDKfGX6AO6Zpg5laV7RexyKYHSkUbkI',
+//   authDomain: 'coffee-house-67328.firebaseapp.com',
+//   projectId: 'coffee-house-67328',
+// };
 
-export default {firebaseConfig, firebase, auth};
+// if (!firebase.apps.length) {
+//   firebase.initializeApp(firebaseConfig);
+// }
 
+// const FirebaseConfig = {
+//   auth,
+//   firebase,
+// };
+
+// export default FirebaseConfig;
