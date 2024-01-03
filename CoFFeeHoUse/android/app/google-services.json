@@ -12,7 +12,20 @@
           "package_name": "com.coffeehouse"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "907868924804-jdfjbv0u6ujhmghs59c8jpsgei9fbb78.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.coffeehouse",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "907868924804-f4irfvler9p48a9d5aeb2nba6m7ie061.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyB9GDKfGX6AO6Zpg5laV7RexyKYHSkUbkI"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "907868924804-f4irfvler9p48a9d5aeb2nba6m7ie061.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

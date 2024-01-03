@@ -1,87 +1,147 @@
 import React, {useState} from 'react';
-import {View, Text, TextInput, StyleSheet} from 'react-native';
-import {Button} from 'react-native-elements';
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  Alert,
+  ImageBackground,
+} from 'react-native';
+import axios from 'axios';
+import {useNavigation} from '@react-navigation/native';
 
 const ProfileScreen = () => {
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleRegisterPress = async () => {
+  const navigation = useNavigation();
+  const handleSave = async () => {
+    if (!name || !email || !phoneNumber || !password) {
+      Alert.alert('Error', 'Please fill all the fields to continue.', [
+        {text: 'OK', onPress: () => console.log('OK Pressed')},
+      ]);
+      return;
+    }
+
     try {
-      const response = await fetch('http://192.168.1.21:5000/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({email, password}),
+      const apiUrl = 'http://192.168.1.21:3000/api/users';
+
+      const response = await axios.post(apiUrl, {
+        name,
+        email,
+        phoneNumber,
+        password,
       });
 
-      if (response.status === 201) {
-        alert('User registration successful');
-      } else {
-        alert('User registration failed. Please try again.');
-      }
+      console.log('User data saved:', response.data);
+
+      Alert.alert('Success', 'User registration successful!', [
+        {text: 'OK', onPress: () => console.log('OK Pressed')},
+      ]);
+      navigation.navigate('Login', {name, phoneNumber});
+      setName('');
+      setEmail('');
+      setPhoneNumber('');
+      setPassword('');
     } catch (error) {
-      alert('Network error. Please try again.');
+      console.error('Error saving user data:', error);
+      Alert.alert('Error', 'Failed to register user. Please try again.', [
+        {text: 'OK', onPress: () => console.log('OK Pressed')},
+      ]);
     }
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Register</Text>
+    <ImageBackground
+      source={{
+        uri: 'https://img.freepik.com/free-photo/brown-concrete-wall-with-scratches-vector_53876-143109.jpg',
+      }}
+      style={styles.background}
+      resizeMode="cover">
+      <View style={styles.container}>
+        <Text style={styles.title}>Coffee Profile</Text>
 
-      <TextInput
-        style={styles.input}
-        placeholder="Enter Email"
-        value={email}
-        onChangeText={setEmail}
-        keyboardType="email-address"
-      />
+        <Text style={styles.label}>Name</Text>
+        <TextInput
+          style={styles.input}
+          value={name}
+          onChangeText={text => setName(text)}
+        />
 
-      <TextInput
-        style={styles.input}
-        placeholder="Enter Password"
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry
-      />
+        <Text style={styles.label}>Email</Text>
+        <TextInput
+          style={styles.input}
+          value={email}
+          onChangeText={text => setEmail(text)}
+        />
 
-      <Button
-        title="Register"
-        onPress={handleRegisterPress}
-        buttonStyle={styles.registerButton}
-      />
-    </View>
+        <Text style={styles.label}>Phone Number</Text>
+        <TextInput
+          style={styles.input}
+          value={phoneNumber}
+          onChangeText={text => setPhoneNumber(text)}
+        />
+
+        <Text style={styles.label}>Password</Text>
+        <TextInput
+          style={styles.input}
+          secureTextEntry={true}
+          value={password}
+          onChangeText={text => setPassword(text)}
+        />
+
+        <TouchableOpacity style={styles.button} onPress={handleSave}>
+          <Text style={styles.buttonText}>Register</Text>
+        </TouchableOpacity>
+      </View>
+    </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  background: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#D2B48C',
+  },
+  container: {
+    width: '80%',
+    padding: 16,
+    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+    borderRadius: 10,
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 20,
+    marginBottom: 16,
+    textAlign: 'center',
+    color: '#4A2B18',
+  },
+  label: {
+    fontSize: 18,
+    marginBottom: 8,
+    color: '#4A2B18',
   },
   input: {
-    width: '80%',
     height: 40,
-    borderColor: 'gray',
+    borderColor: '#4A2B18',
     borderWidth: 1,
-    borderRadius: 5,
-    marginBottom: 15,
-    paddingLeft: 10,
-    backgroundColor: 'white',
+    marginBottom: 16,
+    paddingHorizontal: 10,
+    backgroundColor: '#FFFFFF',
   },
-  registerButton: {
-    backgroundColor: '#8B4513',
-    width: '80%',
-    borderRadius: 5,
-    textAlign:'center'
+  button: {
+    backgroundColor: '#4A2B18',
+    paddingVertical: 12,
+    borderRadius: 8,
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: '#FFFFFF',
+    fontSize: 18,
   },
 });
 
