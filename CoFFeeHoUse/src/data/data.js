@@ -1,12 +1,11 @@
-export const data = [
+export const Data = [
   {
     id: 1,
     name: 'Espresso',
-    image:
-      'https://blogstudio.s3.theshoppad.net/coffeeheroau/ec178d83e5f597b162cda1e60cb64194.jpg',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/b/bb/Espresso.jpg',
     price: 199.99,
     grams: 30,
-  },        
+  },
   {
     id: 2,
     name: 'Latte',
