@@ -1,28 +1,27 @@
 import React from 'react';
-import {
-  ScrollView,
-  View,
-  Text,
-  Image,
-  StyleSheet,
-  Button,
-  TouchableOpacity,
-} from 'react-native';
-import {useDispatch} from 'react-redux';
+import { View, Text, Image, StyleSheet, Button, TouchableOpacity, FlatList } from 'react-native';
+import { useDispatch } from 'react-redux';
 import Header from '../components/ToolBar';
-import {Data} from '../data/data';
-import {addToCart} from '../Redux/cartSlice';
-import {useNavigation} from '@react-navigation/native';
+import { Data } from '../data/data';
+import { addToCart } from '../Redux/cartSlice';
+import { useNavigation } from '@react-navigation/native';
 
 const HomeScreen = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
-  const handleAddToCart = productId => {
-    dispatch(addToCart(productId));
+  const handleAddToCart = (product) => {
+    dispatch(
+      addToCart({
+        id: product.id,
+        name: product.name,
+        image: product.image,
+        price: product.price,
+      }),
+    );
   };
 
-  const navigateToProductView = product => {
+  const navigateToProductView = (product) => {
     navigation.navigate('ProductView', {
       productId: product.id,
       image: product.image,
@@ -32,28 +31,31 @@ const HomeScreen = () => {
     });
   };
 
+  const renderItem = ({ item }) => (
+    <TouchableOpacity onPress={() => navigateToProductView(item)}>
+      <View style={styles.card}>
+        <Image source={{ uri: item.image }} style={styles.image} />
+        <Text style={styles.name}>{item.name}</Text>
+        <Text style={styles.price}>₹{item.price.toFixed(2)}</Text>
+        <Text style={styles.grams}>{item.grams} grams</Text>
+        <Button
+          title="Add to cart"
+          color={'brown'}
+          onPress={() => handleAddToCart(item)}
+        />
+      </View>
+    </TouchableOpacity>
+  );
+
   return (
-    <View style={{flex: 1}}>
+    <View style={{ flex: 1 }}>
       <Header />
-      <ScrollView showsVerticalScrollIndicator={false}>
-        {Data.map(product => (
-          <TouchableOpacity
-            key={product.id}
-            onPress={() => navigateToProductView(product)}>
-            <View style={styles.card}>
-              <Image source={{uri: product.image}} style={styles.image} />
-              <Text style={styles.name}>{product.name}</Text>
-              <Text style={styles.price}>₹{product.price.toFixed(2)}</Text>
-              <Text style={styles.grams}>{product.grams} grams</Text>
-              <Button
-                title="Add to cart"
-                color={'brown'}
-                onPress={() => handleAddToCart(product.id)}
-              />
-            </View>
-          </TouchableOpacity>
-        ))}
-      </ScrollView>
+      <FlatList
+        data={Data}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={renderItem}
+        showsVerticalScrollIndicator={false}
+      />
     </View>
   );
 };

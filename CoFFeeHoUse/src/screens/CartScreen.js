@@ -1,22 +1,33 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, FlatList, Image, StyleSheet } from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  FlatList,
+  Image,
+  StyleSheet,
+} from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { increaseQuantity, decreaseQuantity, removeItem } from '../Redux/cartSlice';
+import {
+  increaseQuantity,
+  decreaseQuantity,
+  removeItem,
+} from '../Redux/cartSlice';
 
 const CartScreen = ({ navigation }) => {
   const dispatch = useDispatch();
-  const cart = useSelector((state) => state.cart);
+  const cart = useSelector(state => state.cart);
 
-  const handleIncrease = (productId) => {
+  const handleIncrease = productId => {
     dispatch(increaseQuantity(productId));
   };
 
-  const handleDecrease = (productId) => {
+  const handleDecrease = productId => {
     dispatch(decreaseQuantity(productId));
   };
 
-  const handleRemove = (productId) => {
+  const handleRemove = productId => {
     dispatch(removeItem(productId));
   };
 
@@ -27,35 +38,39 @@ const CartScreen = ({ navigation }) => {
           <Text style={styles.emptyCartText}>Your cart is empty</Text>
           <TouchableOpacity
             style={styles.continueShoppingButton}
-            onPress={() => navigation.navigate('Home')}
-          >
-            <Text style={styles.continueShoppingButtonText}>Continue Shopping</Text>
+            onPress={() => navigation.navigate('Home')}>
+            <Text style={styles.continueShoppingButtonText}>
+              Continue Shopping
+            </Text>
           </TouchableOpacity>
         </View>
       ) : (
         <FlatList
           data={cart.items}
-          keyExtractor={(item) => item.id.toString()}
+          keyExtractor={item => item.id}
           renderItem={({ item }) => (
             <View style={styles.cartItem}>
               <Image source={{ uri: item.image }} style={styles.image} />
               <View style={styles.itemDetails}>
                 <Text style={styles.itemName}>{item.name}</Text>
-                <Text>Price: ₹{item.price}</Text>
-                <Text>Quantity: {item.quantity}</Text>
-                <View style={styles.buttonContainer}>
-                  <TouchableOpacity style={styles.button} onPress={() => handleDecrease(item.id)}>
-                    <Text style={styles.buttonText}>-</Text>
+                <Text style={styles.price}>₹{item.price}</Text>
+                <View style={styles.quantityContainer}>
+                  <TouchableOpacity
+                    style={styles.quantityButton}
+                    onPress={() => handleDecrease(item.id)}>
+                    <Text style={styles.quantityButtonText}>-</Text>
                   </TouchableOpacity>
-                  <TouchableOpacity style={styles.button} onPress={() => handleIncrease(item.id)}>
-                    <Text style={styles.buttonText}>+</Text>
+                  <Text style={styles.quantityText}>{item.quantity}</Text>
+                  <TouchableOpacity
+                    style={styles.quantityButton}
+                    onPress={() => handleIncrease(item.id)}>
+                    <Text style={styles.quantityButtonText}>+</Text>
                   </TouchableOpacity>
                 </View>
               </View>
               <TouchableOpacity
                 style={styles.removeButton}
-                onPress={() => handleRemove(item.id)}
-              >
+                onPress={() => handleRemove(item.id)}>
                 <Text style={styles.removeButtonText}>Remove</Text>
               </TouchableOpacity>
             </View>
@@ -79,12 +94,14 @@ const styles = StyleSheet.create({
   emptyCartText: {
     fontSize: 18,
     marginBottom: 16,
+    color: '#777', // Dimmed text color
   },
   continueShoppingButton: {
     backgroundColor: '#3498db',
     borderRadius: 5,
     paddingVertical: 12,
     paddingHorizontal: 24,
+    marginTop: 16,
   },
   continueShoppingButtonText: {
     color: 'white',
@@ -96,50 +113,60 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderBottomWidth: 1,
     borderColor: '#ddd',
-    paddingVertical: 8,
+    paddingVertical: 16,
     paddingHorizontal: 16,
   },
   image: {
-    width: 50,
-    height: 50,
-    marginRight: 12,
+    width: 70,
+    height: 70,
+    marginRight: 16,
     borderRadius: 8,
   },
   itemDetails: {
     flex: 1,
   },
   itemName: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginBottom: 4,
-  },
-  buttonContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 8,
-  },
-  button: {
-    backgroundColor: '#3498db',
-    borderRadius: 4,
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    marginRight: 8,
-  },
-  buttonText: {
-    color: 'white',
     fontSize: 18,
     fontWeight: 'bold',
+    marginBottom: 8,
+  },
+  price: {
+    fontSize: 16,
+    color: '#777', // Dimmed text color
+    marginBottom: 8,
+  },
+  quantityContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  quantityButton: {
+    backgroundColor: '#3498db',
+    borderRadius: 4,
+    paddingVertical: 6,
+    paddingHorizontal: 12,
+    marginRight: 8,
+  },
+  quantityButtonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  quantityText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginHorizontal: 8,
   },
   removeButton: {
-    marginTop: 8,
+    marginLeft: 'auto',
     backgroundColor: 'red',
     borderRadius: 5,
+    paddingVertical: 8,
+    paddingHorizontal: 16,
   },
   removeButtonText: {
     color: '#fff',
     fontSize: 15,
     fontWeight: '700',
-    padding: 5,
   },
 });
 

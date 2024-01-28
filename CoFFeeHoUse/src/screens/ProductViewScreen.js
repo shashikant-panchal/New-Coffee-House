@@ -8,8 +8,15 @@ const ProductView = ({route}) => {
   const {image, name, size, price} = route.params;
   const dispatch = useDispatch();
 
-  const handleAddToCart = productId => {
-    dispatch(addToCart(productId));
+  const handleAddToCart = () => {
+    dispatch(
+      addToCart({
+        id: route.params.productId,
+        name: route.params.name,
+        image: route.params.image,
+        price: parseFloat(route.params.price), 
+      }),
+    );
   };
 
   return (
