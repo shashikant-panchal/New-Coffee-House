@@ -6,8 +6,9 @@ import {
   FlatList,
   Image,
   StyleSheet,
+  Alert,
 } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 
 import {
   increaseQuantity,
@@ -15,7 +16,7 @@ import {
   removeItem,
 } from '../Redux/cartSlice';
 
-const CartScreen = ({ navigation }) => {
+const CartScreen = ({navigation}) => {
   const dispatch = useDispatch();
   const cart = useSelector(state => state.cart);
 
@@ -29,6 +30,46 @@ const CartScreen = ({ navigation }) => {
 
   const handleRemove = productId => {
     dispatch(removeItem(productId));
+  };
+
+  const getTotalItems = () => {
+    return cart.items.reduce((total, item) => total + item.quantity, 0);
+  };
+
+  const getTotalPrice = () => {
+    return cart.items.reduce(
+      (total, item) => total + item.price * item.quantity,
+      0,
+    );
+  };
+
+  const handlePlaceOrder = () => {
+    const {items} = cart;
+    const orderItems = items.map(item => ({
+      name: item.name,
+      price: item.price,
+      quantity: item.quantity,
+    }));
+    const totalPrice = items.reduce(
+      (acc, item) => acc + item.price * item.quantity,
+      0,
+    );
+    const formattedTotalPrice = totalPrice.toFixed(2);
+    Alert.alert(
+      'Order Placed Successfully',
+      `Total Price: ₹${formattedTotalPrice}`,
+      [
+        {
+          text: 'OK',
+          onPress: () => {
+            navigation.navigate('Orders', {
+              orderItems,
+              totalPrice: formattedTotalPrice,
+            });
+          },
+        },
+      ],
+    );
   };
 
   return (
@@ -48,9 +89,9 @@ const CartScreen = ({ navigation }) => {
         <FlatList
           data={cart.items}
           keyExtractor={item => item.id}
-          renderItem={({ item }) => (
+          renderItem={({item}) => (
             <View style={styles.cartItem}>
-              <Image source={{ uri: item.image }} style={styles.image} />
+              <Image source={{uri: item.image}} style={styles.image} />
               <View style={styles.itemDetails}>
                 <Text style={styles.itemName}>{item.name}</Text>
                 <Text style={styles.price}>₹{item.price}</Text>
@@ -77,6 +118,26 @@ const CartScreen = ({ navigation }) => {
           )}
         />
       )}
+
+      {cart.items.length > 0 && (
+        <View style={styles.placeOrderContainer}>
+          <View style={styles.totalItemsContainer}>
+            <Text style={styles.totalItemsText}>
+              Total Items: {getTotalItems()}
+            </Text>
+          </View>
+          <View style={styles.totalPriceContainer}>
+            <Text style={styles.totalPriceText}>
+              Total Price: ₹{getTotalPrice()}
+            </Text>
+          </View>
+          <TouchableOpacity
+            style={styles.placeOrderButton}
+            onPress={handlePlaceOrder}>
+            <Text style={styles.placeOrderButtonText}>Place Order</Text>
+          </TouchableOpacity>
+        </View>
+      )}
     </View>
   );
 };
@@ -94,7 +155,7 @@ const styles = StyleSheet.create({
   emptyCartText: {
     fontSize: 18,
     marginBottom: 16,
-    color: '#777', // Dimmed text color
+    color: '#777',
   },
   continueShoppingButton: {
     backgroundColor: '#3498db',
@@ -132,7 +193,7 @@ const styles = StyleSheet.create({
   },
   price: {
     fontSize: 16,
-    color: '#777', // Dimmed text color
+    color: '#777',
     marginBottom: 8,
   },
   quantityContainer: {
@@ -167,6 +228,40 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 15,
     fontWeight: '700',
+  },
+  placeOrderContainer: {
+    borderTopWidth: 1,
+    borderColor: '#ddd',
+    paddingVertical: 16,
+    paddingHorizontal: 16,
+    backgroundColor: 'white',
+  },
+  totalItemsContainer: {
+    marginBottom: 8,
+  },
+  totalItemsText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  totalPriceContainer: {
+    marginBottom: 16,
+  },
+  totalPriceText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#3498db',
+  },
+  placeOrderButton: {
+    backgroundColor: '#3498db',
+    borderRadius: 5,
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+  },
+  placeOrderButtonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
 });
 
