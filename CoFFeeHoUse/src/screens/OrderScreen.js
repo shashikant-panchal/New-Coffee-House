@@ -1,11 +1,30 @@
 import React from 'react';
-import { View, Text, FlatList, Image, StyleSheet, TouchableOpacity } from 'react-native';
-import { Data } from '../data/data';
+import {
+  View,
+  Text,
+  FlatList,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native';
+import {Data} from '../data/data';
+import Header from '../components/ToolBar';
 
-const OrderScreen = () => {
-  const renderItem = ({ item }) => (
-    <TouchableOpacity style={styles.itemContainer}>
-      <Image source={{ uri: item.image }} style={styles.image} />
+const OrderScreen = ({navigation}) => {
+  const navigateToProductView = product => {
+    navigation.navigate('ProductView', {
+      productId: product.id,
+      image: product.image,
+      name: product.name,
+      size: product.grams,
+      price: product.price.toFixed(2),
+    });
+  };
+  const renderItem = ({item}) => (
+    <TouchableOpacity
+      style={styles.itemContainer}
+      onPress={() => navigateToProductView(item)}>
+      <Image source={{uri: item.image}} style={styles.image} />
       <View style={styles.detailsContainer}>
         <Text style={styles.name}>{item.name}</Text>
         <Text style={styles.price}>Price: ₹{item.price}</Text>
@@ -18,7 +37,7 @@ const OrderScreen = () => {
       <FlatList
         data={Data}
         renderItem={renderItem}
-        keyExtractor={(item) => item.id.toString()}
+        keyExtractor={item => item.id.toString()}
       />
     </View>
   );
@@ -38,7 +57,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     elevation: 3,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.2,
     shadowRadius: 2,
   },

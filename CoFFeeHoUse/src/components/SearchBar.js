@@ -7,7 +7,6 @@ const SearchBar = ({ placeholder, onChangeText, onSearchPress }) => {
       placeholder={placeholder}
       onChangeText={onChangeText}
       leftIcon={<Icon name="search" type="font-awesome" />}
-    //   rightIcon={<Icon name="search" type="font-awesome" onPress={onSearchPress} />}
     />
   );
 };

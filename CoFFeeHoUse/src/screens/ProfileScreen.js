@@ -1,30 +1,33 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
   TextInput,
   TouchableOpacity,
   StyleSheet,
-  Alert,
   ImageBackground,
+  ActivityIndicator,
+  Alert
 } from 'react-native';
 import axios from 'axios';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 
 const ProfileScreen = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const navigation = useNavigation();
+
   const handleSave = async () => {
     if (!name || !email || !phoneNumber || !password) {
-      Alert.alert('Error', 'Please fill all the fields to continue.', [
-        {text: 'OK', onPress: () => console.log('OK Pressed')},
-      ]);
+      Alert.alert('Error', 'Please fill all the fields to continue.');
       return;
     }
+
+    setLoading(true);
 
     try {
       const apiUrl = 'http://192.168.1.21:3000/api/users';
@@ -38,31 +41,27 @@ const ProfileScreen = () => {
 
       console.log('User data saved:', response.data);
 
-      Alert.alert('Success', 'User registration successful!', [
-        {text: 'OK', onPress: () => console.log('OK Pressed')},
-      ]);
-      navigation.navigate('Login', {name, phoneNumber});
+      Alert.alert('Success', 'User registration successful!');
+      navigation.navigate('Login', { name, phoneNumber });
       setName('');
       setEmail('');
       setPhoneNumber('');
       setPassword('');
     } catch (error) {
       console.error('Error saving user data:', error);
-      Alert.alert('Error', 'Failed to register user. Please try again.', [
-        {text: 'OK', onPress: () => console.log('OK Pressed')},
-      ]);
+      Alert.alert('Error', 'Failed to register user. Please try again.');
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <ImageBackground
-      source={{
-        uri: 'https://img.freepik.com/free-photo/brown-concrete-wall-with-scratches-vector_53876-143109.jpg',
-      }}
+      source={{ uri: 'https://source.unsplash.com/featured/?coffee' }}
       style={styles.background}
       resizeMode="cover">
       <View style={styles.container}>
-        <Text style={styles.title}>Coffee Profile</Text>
+        <Text style={styles.title}>Create Your Profile</Text>
 
         <Text style={styles.label}>Name</Text>
         <TextInput
@@ -76,6 +75,7 @@ const ProfileScreen = () => {
           style={styles.input}
           value={email}
           onChangeText={text => setEmail(text)}
+          keyboardType="email-address"
         />
 
         <Text style={styles.label}>Phone Number</Text>
@@ -83,6 +83,7 @@ const ProfileScreen = () => {
           style={styles.input}
           value={phoneNumber}
           onChangeText={text => setPhoneNumber(text)}
+          keyboardType="phone-pad"
         />
 
         <Text style={styles.label}>Password</Text>
@@ -93,8 +94,15 @@ const ProfileScreen = () => {
           onChangeText={text => setPassword(text)}
         />
 
-        <TouchableOpacity style={styles.button} onPress={handleSave}>
-          <Text style={styles.buttonText}>Register</Text>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={handleSave}
+          disabled={loading}>
+          {loading ? (
+            <ActivityIndicator color="#FFFFFF" />
+          ) : (
+            <Text style={styles.buttonText}>Register</Text>
+          )}
         </TouchableOpacity>
       </View>
     </ImageBackground>
@@ -112,20 +120,22 @@ const styles = StyleSheet.create({
     padding: 16,
     backgroundColor: 'rgba(255, 255, 255, 0.8)',
     borderRadius: 10,
+    alignItems: 'center',
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 16,
-    textAlign: 'center',
     color: '#4A2B18',
   },
   label: {
     fontSize: 18,
     marginBottom: 8,
     color: '#4A2B18',
+    alignSelf: 'flex-start',
   },
   input: {
+    width: '100%',
     height: 40,
     borderColor: '#4A2B18',
     borderWidth: 1,
@@ -135,6 +145,7 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: '#4A2B18',
+    width: '100%',
     paddingVertical: 12,
     borderRadius: 8,
     alignItems: 'center',

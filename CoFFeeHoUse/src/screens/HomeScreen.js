@@ -1,16 +1,27 @@
-import React from 'react';
-import { View, Text, Image, StyleSheet, Button, TouchableOpacity, FlatList } from 'react-native';
-import { useDispatch } from 'react-redux';
+import React, {useState} from 'react';
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  Button,
+  TouchableOpacity,
+  FlatList,
+  TextInput,
+} from 'react-native';
+import {useDispatch} from 'react-redux';
 import Header from '../components/ToolBar';
-import { Data } from '../data/data';
-import { addToCart } from '../Redux/cartSlice';
-import { useNavigation } from '@react-navigation/native';
+import {Data} from '../data/data';
+import {addToCart} from '../Redux/cartSlice';
+import {useNavigation} from '@react-navigation/native';
 
 const HomeScreen = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
-  const handleAddToCart = (product) => {
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const handleAddToCart = product => {
     dispatch(
       addToCart({
         id: product.id,
@@ -21,7 +32,7 @@ const HomeScreen = () => {
     );
   };
 
-  const navigateToProductView = (product) => {
+  const navigateToProductView = product => {
     navigation.navigate('ProductView', {
       productId: product.id,
       image: product.image,
@@ -31,10 +42,14 @@ const HomeScreen = () => {
     });
   };
 
-  const renderItem = ({ item }) => (
+  const filteredData = Data.filter(item =>
+    item.name.toLocaleLowerCase().includes(searchQuery.toLocaleLowerCase()),
+  );
+
+  const renderItem = ({item}) => (
     <TouchableOpacity onPress={() => navigateToProductView(item)}>
       <View style={styles.card}>
-        <Image source={{ uri: item.image }} style={styles.image} />
+        <Image source={{uri: item.image}} style={styles.image} />
         <Text style={styles.name}>{item.name}</Text>
         <Text style={styles.price}>₹{item.price.toFixed(2)}</Text>
         <Text style={styles.grams}>{item.grams} grams</Text>
@@ -48,11 +63,19 @@ const HomeScreen = () => {
   );
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{flex: 1}}>
       <Header />
+      <View style={styles.searchContainer}>
+        <TextInput
+          style={styles.searchInput}
+          placeholder="Search Coffee..."
+          value={searchQuery}
+          onChangeText={text => setSearchQuery(text)}
+        />
+      </View>
       <FlatList
-        data={Data}
-        keyExtractor={(item) => item.id.toString()}
+        data={filteredData}
+        keyExtractor={item => item.id.toString()}
         renderItem={renderItem}
         showsVerticalScrollIndicator={false}
       />
@@ -88,6 +111,15 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#555',
   },
+  searchContainer: {
+    padding: 10,
+    backgroundColor: '#f2f2f2',
+    marginBottom: 8,
+    borderWidth: 2,
+    margin: 10,
+    borderColor: 'brown',
+    borderRadius: 15,
+  }
 });
 
 export default HomeScreen;
