@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
   StyleSheet,
   ImageBackground,
-  ActivityIndicator,
   Alert,
 } from 'react-native';
 import axios from 'axios';
