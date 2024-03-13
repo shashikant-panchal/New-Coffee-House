@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -7,17 +7,16 @@ import {
   StyleSheet,
   ImageBackground,
   ActivityIndicator,
-  Alert
+  Alert,
 } from 'react-native';
 import axios from 'axios';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 
 const ProfileScreen = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false);
 
   const navigation = useNavigation();
 
@@ -26,8 +25,6 @@ const ProfileScreen = () => {
       Alert.alert('Error', 'Please fill all the fields to continue.');
       return;
     }
-
-    setLoading(true);
 
     try {
       const apiUrl = 'http://192.168.1.21:3000/api/users';
@@ -42,7 +39,7 @@ const ProfileScreen = () => {
       console.log('User data saved:', response.data);
 
       Alert.alert('Success', 'User registration successful!');
-      navigation.navigate('Login', { name, phoneNumber });
+      navigation.navigate('Login', {name, phoneNumber});
       setName('');
       setEmail('');
       setPhoneNumber('');
@@ -50,14 +47,12 @@ const ProfileScreen = () => {
     } catch (error) {
       console.error('Error saving user data:', error);
       Alert.alert('Error', 'Failed to register user. Please try again.');
-    } finally {
-      setLoading(false);
     }
   };
 
   return (
     <ImageBackground
-      source={{ uri: 'https://source.unsplash.com/featured/?coffee' }}
+      source={{uri: 'https://source.unsplash.com/featured/?coffee'}}
       style={styles.background}
       resizeMode="cover">
       <View style={styles.container}>
@@ -94,15 +89,8 @@ const ProfileScreen = () => {
           onChangeText={text => setPassword(text)}
         />
 
-        <TouchableOpacity
-          style={styles.button}
-          onPress={handleSave}
-          disabled={loading}>
-          {loading ? (
-            <ActivityIndicator color="#FFFFFF" />
-          ) : (
-            <Text style={styles.buttonText}>Register</Text>
-          )}
+        <TouchableOpacity style={styles.button} onPress={handleSave}>
+          <Text style={styles.buttonText}>Register</Text>
         </TouchableOpacity>
       </View>
     </ImageBackground>
