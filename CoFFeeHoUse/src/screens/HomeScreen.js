@@ -112,13 +112,15 @@ const styles = StyleSheet.create({
     color: '#555',
   },
   searchContainer: {
-    padding: 10,
     backgroundColor: '#f2f2f2',
     marginBottom: 8,
-    borderWidth: 2,
+    borderWidth: 1,
     margin: 10,
     borderColor: 'brown',
     borderRadius: 15,
+  },
+  searchInput:{
+    paddingLeft:15
   }
 });
 
