@@ -14,6 +14,7 @@ import Header from '../components/ToolBar';
 import {Data} from '../data/data';
 import {addToCart} from '../Redux/cartSlice';
 import {useNavigation} from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 const HomeScreen = () => {
   const dispatch = useDispatch();
@@ -66,6 +67,7 @@ const HomeScreen = () => {
     <View style={{flex: 1}}>
       <Header />
       <View style={styles.searchContainer}>
+        <Icon name="search" size={20} />
         <TextInput
           style={styles.searchInput}
           placeholder="Search Coffee..."
@@ -118,10 +120,13 @@ const styles = StyleSheet.create({
     margin: 10,
     borderColor: 'brown',
     borderRadius: 15,
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingLeft: 15,
   },
-  searchInput:{
-    paddingLeft:15
-  }
+  searchInput: {
+    paddingLeft: 5,
+  },
 });
 
 export default HomeScreen;
