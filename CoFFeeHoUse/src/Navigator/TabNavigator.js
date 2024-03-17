@@ -8,10 +8,12 @@ import HomeScreen from '../screens/HomeScreen';
 import CartScreen from '../screens/CartScreen';
 import OrderScreen from '../screens/OrderScreen';
 import ProfileScreen from '../screens/ProfileScreen';
-import LoginScreen from '../screens/LoginScreen';
+import AboutUs from '../screens/AboutUs';
 import ProductViewScreen from '../screens/ProductViewScreen';
 
 import { increaseQuantity, decreaseQuantity, removeItem, addToCart } from '../Redux/cartSlice';
+import Register from '../screens/Register';
+import PaymentScreen from '../screens/Payment';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -26,6 +28,7 @@ const HomeStack = () => (
 const CartStack = () => (
   <Stack.Navigator>
     <Stack.Screen name="Cart" component={CartScreen} />
+    <Stack.Screen name="Payment" component={PaymentScreen} />
   </Stack.Navigator>
 );
 
@@ -38,7 +41,8 @@ const OrderStack = () => (
 const ProfileStack = () => (
   <Stack.Navigator>
     <Stack.Screen name="Profile" component={ProfileScreen} />
-    <Stack.Screen name="Login" component={LoginScreen} />
+    <Stack.Screen name="Register" component={Register} />
+    <Stack.Screen name="AboutUs" component={AboutUs} />
   </Stack.Navigator>
 );
 

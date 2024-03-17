@@ -53,7 +53,7 @@ const HomeScreen = () => {
         <Image source={{uri: item.image}} style={styles.image} />
         <Text style={styles.name}>{item.name}</Text>
         <Text style={styles.price}>₹{item.price.toFixed(2)}</Text>
-        <Text style={styles.grams}>{item.grams} grams</Text>
+        <Text style={styles.grams}>{item.grams} ml</Text>
         <Button
           title="Add to cart"
           color={'brown'}

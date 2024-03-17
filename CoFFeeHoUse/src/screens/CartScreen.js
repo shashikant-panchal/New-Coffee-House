@@ -6,7 +6,6 @@ import {
   FlatList,
   Image,
   StyleSheet,
-  Alert,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 
@@ -44,32 +43,7 @@ const CartScreen = ({navigation}) => {
   };
 
   const handlePlaceOrder = () => {
-    const {items} = cart;
-    const orderItems = items.map(item => ({
-      name: item.name,
-      price: item.price,
-      quantity: item.quantity,
-    }));
-    const totalPrice = items.reduce(
-      (acc, item) => acc + item.price * item.quantity,
-      0,
-    );
-    const formattedTotalPrice = totalPrice.toFixed(2);
-    Alert.alert(
-      'Order Placed Successfully',
-      `Total Price: ₹${formattedTotalPrice}`,
-      [
-        {
-          text: 'OK',
-          onPress: () => {
-            navigation.navigate('Orders', {
-              orderItems,
-              totalPrice: formattedTotalPrice,
-            });
-          },
-        },
-      ],
-    );
+    navigation.navigate('Payment', {totalPrice: getTotalPrice()});
   };
 
   return (
