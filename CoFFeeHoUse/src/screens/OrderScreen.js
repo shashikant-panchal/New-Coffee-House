@@ -36,11 +36,15 @@ const OrderScreen = ({route, navigation}) => {
 
   return (
     <View style={styles.container}>
-      <FlatList
-        data={cartItems}
-        renderItem={renderItem}
-        keyExtractor={item => item.id.toString()}
-      />
+      {cartItems.length > 0 ? (
+        <FlatList
+          data={cartItems}
+          renderItem={renderItem}
+          keyExtractor={item => item.id.toString()}
+        />
+      ) : (
+        <Text style={{textAlign:'center', color:'red'}}>No Orders Found</Text>
+      )}
     </View>
   );
 };
