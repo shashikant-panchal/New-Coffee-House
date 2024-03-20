@@ -7,18 +7,16 @@ import {
   ImageBackground,
   ActivityIndicator,
 } from 'react-native';
-import {useNavigation, useRoute} from '@react-navigation/native';
 import {useDispatch} from 'react-redux';
+import axios from 'axios';
 
 import {removeAllItems} from '../Redux/cartSlice';
 
-const PaymentScreen = () => {
+const PaymentScreen = ({route, navigation}) => {
   const [selectedOption, setSelectedOption] = useState(null);
   const [processingOrder, setProcessingOrder] = useState(false);
   const [orderPlaced, setOrderPlaced] = useState(false);
-  const navigation = useNavigation();
-  const route = useRoute();
-  const {totalPrice} = route.params;
+  const {cartItems, totalPrice} = route.params;
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -27,17 +25,44 @@ const PaymentScreen = () => {
     };
   }, []);
 
-  const handleConfirmOrder = () => {
+  const handleConfirmOrder = async () => {
+    const orderTime = new Date().toLocaleTimeString();
+    console.log('cartItems===>', cartItems);
     setProcessingOrder(true);
-    setTimeout(() => {
+
+    const orderData = {
+      userId: '65f67c2c2ed30f7531e5386d',
+      items: cartItems,
+      totalAmount: totalPrice,
+      orderTime: orderTime,
+    };
+
+    try {
+      const response = await axios.post(
+        'http://192.168.1.21:3000/api/orders',
+        orderData,
+      );
       setProcessingOrder(false);
       setOrderPlaced(true);
       setTimeout(() => {
         setOrderPlaced(false);
         dispatch(removeAllItems());
-        navigation.navigate('Cart');
+        navigation.push('Orders', {
+          cartItems: cartItems,
+          totalPrice: totalPrice,
+          orderTime: orderTime,
+        }) ||
+          navigation.navigate('Orders', {
+            cartItems: cartItems,
+            totalPrice: totalPrice,
+            orderTime: orderTime,
+          });
       }, 3000);
-    }, 3000);
+    } catch (error) {
+      console.error('Error:', error);
+      setProcessingOrder(false);
+      // Handle error
+    }
   };
 
   const handlePaymentOptionSelect = option => {

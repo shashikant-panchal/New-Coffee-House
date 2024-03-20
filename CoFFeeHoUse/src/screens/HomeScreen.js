@@ -75,12 +75,18 @@ const HomeScreen = () => {
           onChangeText={text => setSearchQuery(text)}
         />
       </View>
-      <FlatList
-        data={filteredData}
-        keyExtractor={item => item.id.toString()}
-        renderItem={renderItem}
-        showsVerticalScrollIndicator={false}
-      />
+      {filteredData.length === 0 ? (
+        <Text style={styles.noResultText}>
+          This Coffee is not available, will be added soon
+        </Text>
+      ) : (
+        <FlatList
+          data={filteredData}
+          keyExtractor={item => item.id.toString()}
+          renderItem={renderItem}
+          showsVerticalScrollIndicator={false}
+        />
+      )}
     </View>
   );
 };
@@ -126,6 +132,13 @@ const styles = StyleSheet.create({
   },
   searchInput: {
     paddingLeft: 5,
+  },
+  noResultText: {
+    textAlign: 'center',
+    marginTop: 20,
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: 'red',
   },
 });
 

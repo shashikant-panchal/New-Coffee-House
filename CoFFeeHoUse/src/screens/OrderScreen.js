@@ -7,10 +7,11 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
-import {Data} from '../data/data';
-import Header from '../components/ToolBar';
 
-const OrderScreen = ({navigation}) => {
+const OrderScreen = ({route, navigation}) => {
+  const cartItems = route && route.params ? route.params.cartItems : [];
+  const orderTime = route && route.params ? route.params.orderTime : {};
+
   const navigateToProductView = product => {
     navigation.navigate('ProductView', {
       productId: product.id,
@@ -28,6 +29,7 @@ const OrderScreen = ({navigation}) => {
       <View style={styles.detailsContainer}>
         <Text style={styles.name}>{item.name}</Text>
         <Text style={styles.price}>Price: ₹{item.price}</Text>
+        <Text style={styles.price}>Ordered at: {orderTime}</Text>
       </View>
     </TouchableOpacity>
   );
@@ -35,7 +37,7 @@ const OrderScreen = ({navigation}) => {
   return (
     <View style={styles.container}>
       <FlatList
-        data={Data}
+        data={cartItems}
         renderItem={renderItem}
         keyExtractor={item => item.id.toString()}
       />

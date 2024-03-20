@@ -7,12 +7,13 @@ import {
   StyleSheet,
   Alert,
   ImageBackground,
-  Share
+  Share,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import {Avatar, Button, Divider, List} from 'react-native-paper';
 
 const ProfileScreen = () => {
   const navigation = useNavigation();
@@ -123,43 +124,46 @@ const ProfileScreen = () => {
             </TouchableOpacity>
           </>
         ) : (
-          <>
-            <View style={styles.accountSection}>
-              <FontAwesome5 name="user" size={24} color="#4A2B18" />
-              <Text style={styles.accountText}>Welcome, {user.name}!</Text>
+          <View style={styles.container1}>
+            <View style={styles.profileInfo}>
+              <Avatar.Text size={80} label={user.name} style={styles.avatar} />
+              <Text style={styles.name}>{user.name}</Text>
+              <Text style={styles.mobile}>{user.phoneNumber}</Text>
             </View>
-            <View style={styles.accountSection}>
-              <FontAwesome5 name="phone" size={24} color="#4A2B18" />
-              <Text style={styles.accountText}>
-                Phone Number: {user.phoneNumber}
-              </Text>
+            <Divider style={styles.divider} />
+            <List.Section>
+              <List.Item
+                title="Order History"
+                left={() => <List.Icon icon="history" color="#8B4513" />}
+                onPress={() => {
+                  navigation.navigate('Orders');
+                }}
+              />
+               <Divider style={styles.divider} />
+              <List.Item
+                title="Share App"
+                left={() => <List.Icon icon="share" color="#8B4513" />}
+                onPress={shareApp}
+              />
+               <Divider style={styles.divider} />
+              <List.Item
+                title="About Us"
+                left={() => <List.Icon icon="information" color="#8B4513" />}
+                onPress={() => {
+                  navigation.navigate('AboutUs');
+                }}
+              />
+               <Divider style={styles.divider} />
+            </List.Section>
+            <View style={styles.signOutButton}>
+              <Button
+                mode="contained"
+                onPress={() => handleSignOut()}
+                color="#8B4513">
+                Sign Out
+              </Button>
             </View>
-            <TouchableOpacity
-              style={styles.menuItem}
-              onPress={() => {
-                navigation.navigate('Orders');
-              }}>
-              <FontAwesome5 name="history" size={24} color="#4A2B18" />
-              <Text style={styles.menuItemText}>Order History</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.menuItem} onPress={shareApp}>
-              <FontAwesome5 name="share-alt" size={24} color="#4A2B18" />
-              <Text style={styles.menuItemText}>Share App</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.menuItem}
-              onPress={() => {
-                navigation.navigate('AboutUs');
-              }}>
-              <FontAwesome5 name="info-circle" size={24} color="#4A2B18" />
-              <Text style={styles.menuItemText}>About Us</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.signOutButton}
-              onPress={handleSignOut}>
-              <Text style={styles.buttonText}>Sign Out</Text>
-            </TouchableOpacity>
-          </>
+          </View>
         )}
       </View>
     </ImageBackground>
@@ -173,7 +177,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   container: {
-    width: '80%',
+    width: '100%',
     padding: 16,
     backgroundColor: 'rgba(255, 255, 255, 0.8)',
     borderRadius: 10,
@@ -265,6 +269,35 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 18,
     fontWeight: 'bold',
+  },
+  container1: {
+    // flex: 1,
+    backgroundColor: '#D2B48C',
+    padding: 20,
+  },
+  profileInfo: {
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  avatar: {
+    backgroundColor: '#8B4513',
+  },
+  name: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#8B4513',
+    marginTop: 10,
+  },
+  mobile: {
+    fontSize: 18,
+    color: '#8B4513',
+  },
+  divider: {
+    marginVertical: 20,
+    backgroundColor: '#8B4513',
+  },
+  signOutButton: {
+    marginVertical: 20,
   },
 });
 

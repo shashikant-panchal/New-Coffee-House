@@ -1,12 +1,16 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import Header from '../components/ToolBar';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addToCart } from '../Redux/cartSlice';
+import { useNavigation } from '@react-navigation/native';
 
 const ProductView = ({ route }) => {
   const { image, name, size, price } = route.params;
   const dispatch = useDispatch();
+  const navigation = useNavigation();
+
+  const cart = useSelector(state => state.cart);
 
   const handleAddToCart = () => {
     dispatch(
@@ -17,6 +21,7 @@ const ProductView = ({ route }) => {
         price: parseFloat(route.params.price),
       }),
     );
+    navigation.navigate('Cart');
   };
 
   return (
@@ -29,12 +34,8 @@ const ProductView = ({ route }) => {
         <Text style={styles.price}>₹{price}</Text>
         <TouchableOpacity
           style={styles.buttonContainer}
-          onPress={() => handleAddToCart(route.params.productId)}>
+          onPress={handleAddToCart}>
           <Text style={styles.buttonText}>Add to Cart</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={[styles.buttonContainer, styles.buyButton]}>
-          <Text style={styles.buttonText}>Buy Now</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -45,6 +46,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f8f8f8',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   card: {
     backgroundColor: '#fff',
@@ -62,40 +65,39 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   image: {
-    width: '100%',
-    height: 200,
+    width: 300,
+    height: 300,
     borderRadius: 12,
     marginBottom: 16,
   },
   name: {
-    fontSize: 24,
+    fontSize: 28,
     fontWeight: 'bold',
     marginBottom: 8,
     textAlign: 'center',
+    color: '#333',
   },
   size: {
-    fontSize: 18,
+    fontSize: 20,
     color: '#555',
     marginBottom: 12,
+    textAlign: 'center',
   },
   price: {
-    fontSize: 22,
+    fontSize: 24,
     color: 'green',
     marginBottom: 16,
   },
   buttonContainer: {
     backgroundColor: '#FF6F61',
-    paddingVertical: 12,
+    paddingVertical: 14,
     paddingHorizontal: 24,
     borderRadius: 10,
-    marginTop: 10,
-  },
-  buyButton: {
-    backgroundColor: '#45A29E',
+    marginTop: 20,
   },
   buttonText: {
     color: '#fff',
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: 'bold',
     textAlign: 'center',
   },

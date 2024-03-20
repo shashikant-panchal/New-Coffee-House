@@ -8,6 +8,8 @@ import {
   StyleSheet,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
+import {useFocusEffect} from '@react-navigation/native';
+import {useCallback} from 'react';
 
 import {
   increaseQuantity,
@@ -43,8 +45,17 @@ const CartScreen = ({navigation}) => {
   };
 
   const handlePlaceOrder = () => {
-    navigation.navigate('Payment', {totalPrice: getTotalPrice()});
+    navigation.push('Payment', {
+      cartItems: cart.items,
+      totalPrice: getTotalPrice(),
+    });
   };
+
+  useFocusEffect(
+    useCallback(() => {
+      console.log('Cart screen focused');
+    }, []),
+  );
 
   return (
     <View style={styles.container}>
