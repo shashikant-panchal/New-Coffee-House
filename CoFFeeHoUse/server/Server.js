@@ -114,19 +114,13 @@ const OrderSchema = new mongoose.Schema({
     },
   ],
   totalAmount: Number,
+  orderTime: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
 const Order = mongoose.model('Order', OrderSchema);
-
-// app.get('/api/orders', async (req, res) => {
-//   try {
-//     const orders = await Order.find();
-//     res.status(200).json(orders);
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).send('Server Error');
-//   }
-// });
 
 app.get('/api/orders', async (req, res) => {
   try {
@@ -140,11 +134,12 @@ app.get('/api/orders', async (req, res) => {
 
 app.post('/api/orders', async (req, res) => {
   try {
-    const {userId, items, totalAmount} = req.body;
+    const {userId, items, totalAmount, orderTime} = req.body;
     const order = new Order({
       userId,
       items,
       totalAmount,
+      orderTime,
     });
     await order.save();
     res.status(201).json(order);

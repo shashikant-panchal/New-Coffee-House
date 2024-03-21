@@ -1,17 +1,9 @@
 import React, {useState, useEffect} from 'react';
-import {
-  View,
-  Text,
-  FlatList,
-  Image,
-  StyleSheet,
-  TouchableOpacity,
-} from 'react-native';
+import {View, Text, FlatList, Image, StyleSheet} from 'react-native';
 import axios from 'axios';
 
-const OrderScreen = ({route, navigation}) => {
+const OrderScreen = ({route}) => {
   const cartItems = route && route.params ? route.params.cartItems : [];
-  const orderTime = route && route.params ? route.params.orderTime : {};
 
   const [orders, setOrders] = useState([]);
 
@@ -23,70 +15,58 @@ const OrderScreen = ({route, navigation}) => {
     try {
       const response = await axios.get('http://192.168.1.21:3000/api/orders');
       setOrders(response.data.orders);
-      console.log(response.data.orders);
     } catch (error) {
       console.error('Error fetching orders:', error);
     }
   };
 
-  const navigateToProductView = product => {
-    navigation.navigate('ProductView', {
-      productId: product.id,
-      image: product.image,
-      name: product.name,
-      size: product.grams,
-      price: product.price.toFixed(2),
-    });
-  };
-  const renderItem = ({item}) => (
-    <TouchableOpacity
-      style={styles.itemContainer}
-      onPress={() => navigateToProductView(item)}>
-      <Image source={{uri: item.image}} style={styles.image} />
-      <View style={styles.detailsContainer}>
-        <Text style={styles.name}>{item.name}</Text>
-        <Text style={styles.price}>Price: ₹{item.price}</Text>
-        <Text style={styles.price}>Ordered at: {orderTime}</Text>
+  const renderOrderItem = ({item}) => {
+    return (
+      <View style={styles.orderContainer}>
+        {item.items.map(product => (
+          <View key={product.id} style={styles.orderItemContainer}>
+            <Image
+              source={{uri: product.image}}
+              style={styles.orderItemImage}
+            />
+            <View style={styles.orderItemDetails}>
+              <Text style={styles.orderItemName}>{product.name}</Text>
+              <Text style={styles.orderItemPrice}>
+                Price: ₹{product.price.toFixed(2)}
+              </Text>
+              <Text style={styles.orderItemQuantity}>
+                Quantity: {product.quantity}
+              </Text>
+              <Text style={{fontWeight: 'bold'}}>Order ID: {item._id}</Text>
+            </View>
+          </View>
+        ))}
+        <Text style={{textAlign: 'right'}}>
+          Order Time: {new Date(item.orderTime).toLocaleString()}
+        </Text>
+        <Text style={{textAlign: 'right'}}>
+          Total Amount: ₹{item.totalAmount}
+        </Text>
       </View>
-    </TouchableOpacity>
-  );
+    );
+  };
 
   return (
     <View style={styles.container}>
       {cartItems?.length > 0 ? (
         <FlatList
           data={orders}
-          renderItem={renderItem}
+          renderItem={renderOrderItem}
           keyExtractor={item => item._id}
         />
       ) : (
-        <View style={{}}>
-          <Text style={{fontSize:20, fontWeight:'bold'}}>Orders History</Text>
+        <View style={styles.orderHistoryContainer}>
+          <Text style={styles.orderHistoryTitle}>Orders History</Text>
           <FlatList
+            showsVerticalScrollIndicator={false}
             data={orders}
             keyExtractor={item => item._id}
-            renderItem={({item}) => (
-              <View>
-                {/* <Text>Order ID: {item._id}</Text>
-                <Text>User ID: {item.userId}</Text> */}
-                {/* <Text>Total Amount: ${item.totalAmount.toFixed(2)}</Text> */}
-                <FlatList
-                  data={item.items}
-                  keyExtractor={item => item._id}
-                  renderItem={({item}) => (
-                    <View style={{flexDirection: 'row', borderWidth:0.1, padding:10}}>
-                      <Image
-                        source={{uri: item.image}}
-                        style={{width: 100, height: 100}}
-                      />
-                      <Text>{item.name}</Text>
-                      <Text>{item.price.toFixed(2)}</Text>
-                      <Text>{item.quantity}</Text>
-                    </View>
-                  )}
-                />
-              </View>
-            )}
+            renderItem={renderOrderItem}
           />
         </View>
       )}
@@ -97,39 +77,57 @@ const OrderScreen = ({route, navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f0f0f0',
-    paddingVertical: 20,
-    paddingHorizontal: 15,
-  },
-  itemContainer: {
-    flexDirection: 'row',
-    marginBottom: 20,
-    borderRadius: 10,
     backgroundColor: '#fff',
-    elevation: 3,
-    shadowColor: '#000',
-    shadowOffset: {width: 0, height: 2},
-    shadowOpacity: 0.2,
-    shadowRadius: 2,
+    paddingHorizontal: 20,
+    paddingTop: 20,
   },
-  image: {
-    width: 100,
-    height: 100,
-    borderRadius: 10,
-  },
-  detailsContainer: {
+  orderHistoryContainer: {
     flex: 1,
-    padding: 10,
   },
-  name: {
+  orderHistoryTitle: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 20,
+  },
+  orderContainer: {
+    backgroundColor: '#f8f8f8',
+    marginBottom: 10,
+    borderRadius: 10,
+    padding: 5,
+  },
+  orderItemContainer: {
+    flexDirection: 'row',
+    marginBottom: 10,
+    padding: 10,
+    borderRadius: 20,
+    backgroundColor: '#f8f8f8',
+  },
+  orderItemImage: {
+    width: 80,
+    height: 80,
+    borderRadius: 8,
+    marginRight: 10,
+  },
+  orderItemDetails: {
+    flex: 1,
+  },
+  orderItemName: {
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 5,
-    color: '#333',
   },
-  price: {
+  orderItemPrice: {
     fontSize: 16,
     color: '#666',
+    marginBottom: 5,
+  },
+  orderItemQuantity: {
+    fontSize: 14,
+    color: '#888',
+  },
+  orderItemTime: {
+    fontSize: 14,
+    color: '#888',
   },
 });
 

@@ -4,7 +4,6 @@ import {
   Text,
   TouchableOpacity,
   StyleSheet,
-  ImageBackground,
   ActivityIndicator,
 } from 'react-native';
 import {useDispatch} from 'react-redux';
@@ -26,7 +25,7 @@ const PaymentScreen = ({route, navigation}) => {
   }, []);
 
   const handleConfirmOrder = async () => {
-    const orderTime = new Date().toLocaleTimeString();
+    const orderTime = new Date();
     setProcessingOrder(true);
     const orderData = {
       userId: '65f67c2c2ed30f7531e5386d',
@@ -62,49 +61,50 @@ const PaymentScreen = ({route, navigation}) => {
   };
 
   return (
-    <ImageBackground
-      source={{
-        uri: 'https://img.freepik.com/free-photo/brown-concrete-wall-with-scratches-vector_53876-143109.jpg',
-      }}
-      style={styles.background}>
-      <View style={styles.container}>
-        <Text style={styles.title}>Choose Payment Method</Text>
-        <TouchableOpacity
-          style={[
-            styles.option,
-            selectedOption === 'Wallet' && styles.selectedOption,
-          ]}
-          onPress={() => handlePaymentOptionSelect('Wallet')}>
-          <Text style={styles.optionText}>Wallet</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[
-            styles.option,
-            selectedOption === 'CreditCard' && styles.selectedOption,
-          ]}
-          onPress={() => handlePaymentOptionSelect('CreditCard')}>
-          <Text style={styles.optionText}>Credit Card</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[
-            styles.option,
-            selectedOption === 'UPI' && styles.selectedOption,
-          ]}
-          onPress={() => handlePaymentOptionSelect('UPI')}>
-          <Text style={styles.optionText}>UPI</Text>
-        </TouchableOpacity>
-        <View style={styles.bottomContainer}>
-          <Text style={styles.totalPriceText}>Total Price: ₹{totalPrice}</Text>
-          <TouchableOpacity
-            style={styles.confirmOrderButton}
-            onPress={handleConfirmOrder}>
-            <Text style={styles.confirmOrderButtonText}>Confirm Order</Text>
-          </TouchableOpacity>
+    <View style={styles.container}>
+      <Text style={styles.title}>Choose Payment Method</Text>
+      <TouchableOpacity
+        style={[
+          styles.option,
+          selectedOption === 'CreditCard' && styles.selectedOption,
+        ]}
+        onPress={() => handlePaymentOptionSelect('CreditCard')}>
+        <Text style={styles.optionText}>Credit Card</Text>
+        <Text style={styles.cardNumber}>**** **** **** 1234</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={[
+          styles.option,
+          selectedOption === 'UPI' && styles.selectedOption,
+        ]}
+        onPress={() => handlePaymentOptionSelect('UPI')}>
+        <Text style={styles.optionText}>UPI</Text>
+        <View style={styles.upiIconsContainer}>
+          <Text style={styles.upiIcon}>GPay</Text>
+          <Text style={styles.upiIcon}>PhonePe</Text>
+          <Text style={styles.upiIcon}>Paytm</Text>
+          <Text style={styles.upiIcon}>Apple Pay</Text>
         </View>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={[
+          styles.option,
+          selectedOption === 'Wallet' && styles.selectedOption,
+        ]}
+        onPress={() => handlePaymentOptionSelect('Wallet')}>
+        <Text style={styles.optionText}>Wallet</Text>
+      </TouchableOpacity>
+      <View style={styles.bottomContainer}>
+        <Text style={styles.totalPriceText}>Total Price: ₹{totalPrice}</Text>
+        <TouchableOpacity
+          style={styles.confirmOrderButton}
+          onPress={handleConfirmOrder}>
+          <Text style={styles.confirmOrderButtonText}>Confirm Order</Text>
+        </TouchableOpacity>
       </View>
       {processingOrder && (
         <View style={styles.overlay}>
-          <ActivityIndicator size="large" color="#fff" />
+          <ActivityIndicator size="large" color="#3498db" />
           <Text style={styles.overlayText}>Processing Order...</Text>
         </View>
       )}
@@ -113,54 +113,62 @@ const PaymentScreen = ({route, navigation}) => {
           <Text style={styles.overlayText}>Order Placed!</Text>
         </View>
       )}
-    </ImageBackground>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  background: {
-    flex: 1,
-    resizeMode: 'cover',
-    justifyContent: 'center',
-  },
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 20,
+    backgroundColor: '#fff',
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 20,
-    color: '#fff',
+    color: '#333',
   },
   option: {
+    width: '100%',
     paddingVertical: 15,
-    paddingHorizontal: 30,
-    marginBottom: 10,
+    paddingHorizontal: 20,
+    marginBottom: 20,
     borderWidth: 1,
     borderRadius: 8,
     borderColor: '#ccc',
-    backgroundColor: 'rgba(255,255,255,0.7)',
   },
   selectedOption: {
-    backgroundColor: '#ffa500', // orange color
+    borderColor: '#3498db',
   },
   optionText: {
     fontSize: 18,
     color: '#333',
+    marginBottom: 5,
+  },
+  cardNumber: {
+    fontSize: 16,
+    color: '#555',
+  },
+  upiIconsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  upiIcon: {
+    fontSize: 16,
+    color: '#555',
   },
   bottomContainer: {
-    position: 'absolute',
-    bottom: 20,
+    marginTop: 20,
     alignItems: 'center',
   },
   totalPriceText: {
     fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 20,
-    color: '#fff',
+    color: '#333',
   },
   confirmOrderButton: {
     backgroundColor: '#3498db',

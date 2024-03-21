@@ -12,14 +12,16 @@ import AboutUs from '../screens/AboutUs';
 import ProductViewScreen from '../screens/ProductViewScreen';
 import Register from '../screens/Register';
 import PaymentScreen from '../screens/Payment';
+import ProductScreen from '../screens/Products';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
 const HomeStack = () => (
-  <Stack.Navigator>
+  <Stack.Navigator screenOptions={{headerShown: false}}>
     <Stack.Screen name="Home" component={HomeScreen} />
     <Stack.Screen name="ProductView" component={ProductViewScreen} />
+    <Stack.Screen name="Products" component={ProductScreen} />
   </Stack.Navigator>
 );
 

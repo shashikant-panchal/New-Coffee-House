@@ -1,11 +1,22 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React, {useRef, useEffect} from 'react';
+import {Text, StyleSheet, Animated, Easing} from 'react-native';
 
-const Header = ({ title }) => {
+const Header = () => {
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    Animated.timing(fadeAnim, {
+      toValue: 1,
+      duration: 1000,
+      easing: Easing.ease,
+      useNativeDriver: true,
+    }).start();
+  }, [fadeAnim]);
+
   return (
-    <View style={styles.headerContainer}>
+    <Animated.View style={[styles.headerContainer, {opacity: fadeAnim}]}>
       <Text style={styles.headerText}>Coffee House</Text>
-    </View>
+    </Animated.View>
   );
 };
 
@@ -17,8 +28,10 @@ const styles = StyleSheet.create({
   },
   headerText: {
     color: 'white',
-    fontSize: 20,
+    fontSize: 24,
     fontWeight: 'bold',
+    textTransform: 'uppercase',
+    letterSpacing: 1,
   },
 });
 

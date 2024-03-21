@@ -126,40 +126,37 @@ const ProfileScreen = () => {
         ) : (
           <View style={styles.container1}>
             <View style={styles.profileInfo}>
-              <Avatar.Text size={80} label={user.name} style={styles.avatar} />
+              <Avatar.Text
+                size={100}
+                label={user.name.charAt(0)}
+                style={styles.avatar}
+              />
               <Text style={styles.name}>{user.name}</Text>
               <Text style={styles.mobile}>{user.phoneNumber}</Text>
             </View>
             <Divider style={styles.divider} />
-            <List.Section>
-              <List.Item
-                title="Order History"
-                left={() => <List.Icon icon="history" color="#8B4513" />}
-                onPress={() => {
-                  navigation.navigate('Orders');
-                }}
-              />
-               <Divider style={styles.divider} />
-              <List.Item
-                title="Share App"
-                left={() => <List.Icon icon="share" color="#8B4513" />}
-                onPress={shareApp}
-              />
-               <Divider style={styles.divider} />
-              <List.Item
-                title="About Us"
-                left={() => <List.Icon icon="information" color="#8B4513" />}
-                onPress={() => {
-                  navigation.navigate('AboutUs');
-                }}
-              />
-               <Divider style={styles.divider} />
-            </List.Section>
+            <TouchableOpacity
+              style={styles.item}
+              onPress={() => navigation.navigate('Orders')}>
+              <Text style={styles.itemText}>Order History</Text>
+            </TouchableOpacity>
+            <Divider style={styles.divider} />
+            <TouchableOpacity style={styles.item} onPress={shareApp}>
+              <Text style={styles.itemText}>Share App</Text>
+            </TouchableOpacity>
+            <Divider style={styles.divider} />
+            <TouchableOpacity
+              style={styles.item}
+              onPress={() => navigation.navigate('AboutUs')}>
+              <Text style={styles.itemText}>About Us</Text>
+            </TouchableOpacity>
+            <Divider style={styles.divider} />
             <View style={styles.signOutButton}>
               <Button
                 mode="contained"
                 onPress={() => handleSignOut()}
-                color="#8B4513">
+                color="#8B4513"
+                labelStyle={styles.signOutButtonText}>
                 Sign Out
               </Button>
             </View>
@@ -271,9 +268,9 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   container1: {
-    // flex: 1,
-    backgroundColor: '#D2B48C',
-    padding: 20,
+    backgroundColor: '#fff',
+    paddingHorizontal: 20,
+    paddingTop: 40,
   },
   profileInfo: {
     alignItems: 'center',
@@ -285,19 +282,29 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#8B4513',
     marginTop: 10,
   },
   mobile: {
+    fontSize: 16,
+    color: '#666',
+    marginTop: 5,
+  },
+  divider: {
+    marginVertical: 15,
+    backgroundColor: '#8B4513',
+  },
+  item: {
+    paddingVertical: 10,
+  },
+  itemText: {
     fontSize: 18,
     color: '#8B4513',
   },
-  divider: {
-    marginVertical: 20,
-    backgroundColor: '#8B4513',
-  },
   signOutButton: {
-    marginVertical: 20,
+    marginTop: 'auto',
+  },
+  signOutButtonText: {
+    fontSize: 18,
   },
 });
 

@@ -38,4 +38,12 @@ export const Data = [
     price: 349.99,
     grams: 400,
   },
+  {
+    id: 6,
+    name: 'Mocha',
+    image:
+      'https://images.immediate.co.uk/production/volatile/sites/2/2021/11/Mocha-1fc71f7.png?resize=768,574',
+    price: 239.99,
+    grams: 250,
+  },
 ];
