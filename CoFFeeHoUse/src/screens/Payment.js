@@ -27,9 +27,7 @@ const PaymentScreen = ({route, navigation}) => {
 
   const handleConfirmOrder = async () => {
     const orderTime = new Date().toLocaleTimeString();
-    console.log('cartItems===>', cartItems);
     setProcessingOrder(true);
-
     const orderData = {
       userId: '65f67c2c2ed30f7531e5386d',
       items: cartItems,
@@ -42,26 +40,20 @@ const PaymentScreen = ({route, navigation}) => {
         'http://192.168.1.21:3000/api/orders',
         orderData,
       );
+
       setProcessingOrder(false);
       setOrderPlaced(true);
+
       setTimeout(() => {
         setOrderPlaced(false);
         dispatch(removeAllItems());
-        navigation.push('Orders', {
-          cartItems: cartItems,
-          totalPrice: totalPrice,
+        navigation.navigate('Orders', {
           orderTime: orderTime,
-        }) ||
-          navigation.navigate('Orders', {
-            cartItems: cartItems,
-            totalPrice: totalPrice,
-            orderTime: orderTime,
-          });
+        });
       }, 3000);
     } catch (error) {
       console.error('Error:', error);
       setProcessingOrder(false);
-      // Handle error
     }
   };
 

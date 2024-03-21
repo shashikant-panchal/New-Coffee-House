@@ -77,7 +77,7 @@ const HomeScreen = () => {
       </View>
       {filteredData.length === 0 ? (
         <Text style={styles.noResultText}>
-          This Coffee is not available, will be added soon
+          This Coffee is not available
         </Text>
       ) : (
         <FlatList

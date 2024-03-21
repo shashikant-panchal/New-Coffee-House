@@ -76,26 +76,26 @@ app.get('/api/login', (req, res) => {
 
 app.post('/api/login', async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const {email, password} = req.body;
     console.log('Received login request for email:', email);
 
-    const user = await User.findOne({ email });
+    const user = await User.findOne({email});
 
     if (!user) {
-      return res.status(400).json({ error: 'User not found.' });
+      return res.status(400).json({error: 'User not found.'});
     }
 
     const isMatch = await user.comparePassword(password);
 
     if (!isMatch) {
-      return res.status(401).json({ error: 'Invalid password.' });
+      return res.status(401).json({error: 'Invalid password.'});
     }
 
-    const { name, phoneNumber } = user;
-    res.status(200).json({ name, phoneNumber });
+    const {name, phoneNumber} = user;
+    res.status(200).json({name, phoneNumber});
   } catch (error) {
     console.error('Error during login:', error);
-    res.status(500).json({ error: 'Server Error' });
+    res.status(500).json({error: 'Server Error'});
   }
 });
 
@@ -118,19 +118,29 @@ const OrderSchema = new mongoose.Schema({
 
 const Order = mongoose.model('Order', OrderSchema);
 
+// app.get('/api/orders', async (req, res) => {
+//   try {
+//     const orders = await Order.find();
+//     res.status(200).json(orders);
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).send('Server Error');
+//   }
+// });
+
 app.get('/api/orders', async (req, res) => {
   try {
     const orders = await Order.find();
-    res.status(200).json(orders);
+    res.json({orders});
   } catch (error) {
-    console.error(error);
-    res.status(500).send('Server Error');
+    console.error('Error fetching orders:', error);
+    res.status(500).json({error: 'Internal server error'});
   }
 });
 
 app.post('/api/orders', async (req, res) => {
   try {
-    const { userId, items, totalAmount } = req.body;
+    const {userId, items, totalAmount} = req.body;
     const order = new Order({
       userId,
       items,

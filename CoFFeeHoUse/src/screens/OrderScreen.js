@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -7,10 +7,27 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
+import axios from 'axios';
 
 const OrderScreen = ({route, navigation}) => {
   const cartItems = route && route.params ? route.params.cartItems : [];
   const orderTime = route && route.params ? route.params.orderTime : {};
+
+  const [orders, setOrders] = useState([]);
+
+  useEffect(() => {
+    fetchOrders();
+  }, []);
+
+  const fetchOrders = async () => {
+    try {
+      const response = await axios.get('http://192.168.1.21:3000/api/orders');
+      setOrders(response.data.orders);
+      console.log(response.data.orders);
+    } catch (error) {
+      console.error('Error fetching orders:', error);
+    }
+  };
 
   const navigateToProductView = product => {
     navigation.navigate('ProductView', {
@@ -36,14 +53,42 @@ const OrderScreen = ({route, navigation}) => {
 
   return (
     <View style={styles.container}>
-      {cartItems.length > 0 ? (
+      {cartItems?.length > 0 ? (
         <FlatList
-          data={cartItems}
+          data={orders}
           renderItem={renderItem}
-          keyExtractor={item => item.id.toString()}
+          keyExtractor={item => item._id}
         />
       ) : (
-        <Text style={{textAlign:'center', color:'red'}}>No Orders Found</Text>
+        <View style={{}}>
+          <Text style={{fontSize:20, fontWeight:'bold'}}>Orders History</Text>
+          <FlatList
+            data={orders}
+            keyExtractor={item => item._id}
+            renderItem={({item}) => (
+              <View>
+                {/* <Text>Order ID: {item._id}</Text>
+                <Text>User ID: {item.userId}</Text> */}
+                {/* <Text>Total Amount: ${item.totalAmount.toFixed(2)}</Text> */}
+                <FlatList
+                  data={item.items}
+                  keyExtractor={item => item._id}
+                  renderItem={({item}) => (
+                    <View style={{flexDirection: 'row', borderWidth:0.1, padding:10}}>
+                      <Image
+                        source={{uri: item.image}}
+                        style={{width: 100, height: 100}}
+                      />
+                      <Text>{item.name}</Text>
+                      <Text>{item.price.toFixed(2)}</Text>
+                      <Text>{item.quantity}</Text>
+                    </View>
+                  )}
+                />
+              </View>
+            )}
+          />
+        </View>
       )}
     </View>
   );
