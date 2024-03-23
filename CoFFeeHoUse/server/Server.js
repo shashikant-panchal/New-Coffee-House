@@ -135,7 +135,7 @@ app.get('/api/orders', async (req, res) => {
 
 app.post('/api/orders', async (req, res) => {
   try {
-    const {userId, items, totalAmount, orderTime,paymentId} = req.body;
+    const {userId, items, totalAmount, orderTime, paymentId} = req.body;
     const order = new Order({
       userId,
       items,
@@ -148,6 +148,17 @@ app.post('/api/orders', async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).send('Server Error');
+  }
+});
+
+app.delete('/api/orders/:orderId', async (req, res) => {
+  try {
+    const {orderId} = req.params;
+    await Order.findByIdAndDelete(orderId);
+    res.status(200).json({message: 'Order cancelled successfully'});
+  } catch (error) {
+    console.error('Error cancelling order:', error);
+    res.status(500).json({error: 'Internal server error'});
   }
 });
 

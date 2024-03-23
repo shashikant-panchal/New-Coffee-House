@@ -1,8 +1,8 @@
-import React, {useState, useEffect} from 'react';
-import {View, Text, FlatList, Image, StyleSheet} from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, FlatList, Image, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import axios from 'axios';
 
-const OrderScreen = ({route}) => {
+const OrderScreen = ({ route }) => {
   const cartItems = route && route.params ? route.params.cartItems : [];
 
   const [orders, setOrders] = useState([]);
@@ -20,13 +20,24 @@ const OrderScreen = ({route}) => {
     }
   };
 
-  const renderOrderItem = ({item}) => {
+  const cancelOrder = async (orderId) => {
+    try {
+      await axios.delete(`http://192.168.0.110:3000/api/orders/${orderId}`);
+      fetchOrders(); // Refresh orders after cancellation
+      Alert.alert('Order Cancelled Successfully');
+    } catch (error) {
+      console.error('Error cancelling order:', error);
+      Alert.alert('Failed to Cancel Order');
+    }
+  };
+
+  const renderOrderItem = ({ item }) => {
     return (
       <View style={styles.orderContainer}>
         {item.items.map(product => (
           <View key={product.id} style={styles.orderItemContainer}>
             <Image
-              source={{uri: product.image}}
+              source={{ uri: product.image }}
               style={styles.orderItemImage}
             />
             <View style={styles.orderItemDetails}>
@@ -37,16 +48,19 @@ const OrderScreen = ({route}) => {
               <Text style={styles.orderItemQuantity}>
                 Quantity: {product.quantity}
               </Text>
-              <Text style={{fontWeight: 'bold'}}>Order ID: {item._id}</Text>
+              <Text style={{ fontWeight: 'bold' }}>Order ID: {item._id}</Text>
             </View>
           </View>
         ))}
-        <Text style={{textAlign: 'right'}}>
+        <Text style={{ textAlign: 'right' }}>
           Order Time: {new Date(item.orderTime).toLocaleString()}
         </Text>
-        <Text style={{textAlign: 'right'}}>
+        <Text style={{ textAlign: 'right' }}>
           Total Amount: ₹{item.totalAmount}
         </Text>
+        <TouchableOpacity onPress={() => cancelOrder(item._id)} style={styles.cancelButton}>
+          <Text style={styles.cancelButtonText}>Cancel Order</Text>
+        </TouchableOpacity>
       </View>
     );
   };
@@ -125,9 +139,16 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#888',
   },
-  orderItemTime: {
-    fontSize: 14,
-    color: '#888',
+  cancelButton: {
+    backgroundColor: 'red',
+    padding: 10,
+    borderRadius: 5,
+    marginTop: 10,
+    alignSelf: 'flex-end',
+  },
+  cancelButtonText: {
+    color: '#fff',
+    fontWeight: 'bold',
   },
 });
 
