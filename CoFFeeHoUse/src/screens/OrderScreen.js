@@ -13,7 +13,7 @@ const OrderScreen = ({route}) => {
 
   const fetchOrders = async () => {
     try {
-      const response = await axios.get('http://192.168.1.21:3000/api/orders');
+      const response = await axios.get('http://192.168.0.110:3000/api/orders');
       setOrders(response.data.orders);
     } catch (error) {
       console.error('Error fetching orders:', error);

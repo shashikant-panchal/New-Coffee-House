@@ -10,6 +10,9 @@ import {
 import {useDispatch, useSelector} from 'react-redux';
 import {useFocusEffect} from '@react-navigation/native';
 import {useCallback} from 'react';
+import {removeAllItems} from '../Redux/cartSlice';
+import RazorpayCheckout from 'react-native-razorpay';
+import axios from 'axios';
 
 import {
   increaseQuantity,
@@ -44,11 +47,47 @@ const CartScreen = ({navigation}) => {
     );
   };
 
-  const handlePlaceOrder = () => {
-    navigation.push('Payment', {
-      cartItems: cart.items,
-      totalPrice: getTotalPrice(),
-    });
+  const totalPrice = getTotalPrice();
+
+  const handlePlaceOrder = async () => {
+    const options = {
+      description: 'Payment for your order',
+      image: 'https://your-image-url.png',
+      currency: 'INR',
+      key: 'rzp_test_ySD5EthQT8Wmtk',
+      amount: totalPrice * 100,
+      name: 'Coffee House',
+      prefill: {
+        email: 'avinash@gmail.com',
+        contact: '7019242928',
+        name: 'Avinash Ekhelikar',
+      },
+      theme: {color: '#3498db'},
+      display: {
+        maxWidth: '100%',
+        maxHeight: '100%',
+      },
+    };
+
+    try {
+      const paymentResponse = await RazorpayCheckout.open(options);
+      const orderTime = new Date();
+      const orderData = {
+        userId: '65f67c2c2ed30f7531e5386d',
+        items: cart.items,
+        totalAmount: totalPrice,
+        orderTime: orderTime.toISOString(),
+        paymentId: paymentResponse.razorpay_payment_id,
+      };
+      const mongoDBResponse = await axios.post(
+        'http://192.168.0.110:3000/api/orders',
+        orderData,
+      );
+      dispatch(removeAllItems());
+      navigation.navigate('Orders');
+    } catch (error) {
+      console.error('Payment Error:', error);
+    }
   };
 
   useFocusEffect(

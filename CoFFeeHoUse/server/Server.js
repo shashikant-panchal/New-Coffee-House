@@ -118,6 +118,7 @@ const OrderSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  paymentId: String,
 });
 
 const Order = mongoose.model('Order', OrderSchema);
@@ -134,12 +135,13 @@ app.get('/api/orders', async (req, res) => {
 
 app.post('/api/orders', async (req, res) => {
   try {
-    const {userId, items, totalAmount, orderTime} = req.body;
+    const {userId, items, totalAmount, orderTime,paymentId} = req.body;
     const order = new Order({
       userId,
       items,
       totalAmount,
       orderTime,
+      paymentId,
     });
     await order.save();
     res.status(201).json(order);

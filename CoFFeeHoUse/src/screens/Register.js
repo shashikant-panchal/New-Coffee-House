@@ -26,7 +26,7 @@ const Register = () => {
     }
 
     try {
-      const apiUrl = 'http://192.168.1.21:3000/api/users';
+      const apiUrl = 'http://192.168.0.110:3000/api/users';
 
       const response = await axios.post(apiUrl, {
         name,

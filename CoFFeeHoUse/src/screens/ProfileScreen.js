@@ -40,7 +40,7 @@ const ProfileScreen = () => {
   const handleLogin = async () => {
     console.log('Login request payload:', {email, password});
     try {
-      const apiUrl = 'http://192.168.1.21:3000/api/login';
+      const apiUrl = 'http://192.168.0.110:3000/api/login';
       const response = await axios.post(apiUrl, {
         email,
         password,

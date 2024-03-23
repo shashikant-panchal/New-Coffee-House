@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import {useDispatch} from 'react-redux';
 import axios from 'axios';
+import RazorpayCheckout from 'react-native-razorpay';
 
 import {removeAllItems} from '../Redux/cartSlice';
 
@@ -24,19 +25,73 @@ const PaymentScreen = ({route, navigation}) => {
     };
   }, []);
 
+  // const handleConfirmOrder = async () => {
+  //   const orderTime = new Date();
+  //   setProcessingOrder(true);
+  //   const orderData = {
+  //     userId: '65f67c2c2ed30f7531e5386d',
+  //     items: cartItems,
+  //     totalAmount: totalPrice,
+  //     orderTime: orderTime,
+  //   };
+
+  //   try {
+  //     const response = await axios.post(
+  //       'http://192.168.1.21:3000/api/orders',
+  //       orderData,
+  //     );
+
+  //     setProcessingOrder(false);
+  //     setOrderPlaced(true);
+
+  //     setTimeout(() => {
+  //       setOrderPlaced(false);
+  //       dispatch(removeAllItems());
+  //       navigation.navigate('Orders', {
+  //         orderTime: orderTime,
+  //       });
+  //     }, 3000);
+  //   } catch (error) {
+  //     console.error('Error:', error);
+  //     setProcessingOrder(false);
+  //   }
+  // };
+
   const handleConfirmOrder = async () => {
-    const orderTime = new Date();
     setProcessingOrder(true);
-    const orderData = {
-      userId: '65f67c2c2ed30f7531e5386d',
-      items: cartItems,
-      totalAmount: totalPrice,
-      orderTime: orderTime,
+
+    const options = {
+      description: 'Payment for your order',
+      image: 'https://your-image-url.png',
+      currency: 'INR',
+      key: 'rzp_test_ySD5EthQT8Wmtk',
+      amount: totalPrice * 100,
+      name: 'Coffee House',
+      prefill: {
+        email: 'avinash@gmail.com',
+        contact: '7019242928',
+        name: 'Avinash Ekhelikar',
+      },
+      theme: {color: '#3498db'},
+      display: {
+        maxWidth: '100%',
+        maxHeight: '100%',
+      },
     };
 
     try {
-      const response = await axios.post(
-        'http://192.168.1.21:3000/api/orders',
+      const paymentResponse = await RazorpayCheckout.open(options);
+      const orderTime = new Date();
+      const orderData = {
+        userId: '65f67c2c2ed30f7531e5386d',
+        items: cartItems,
+        totalAmount: totalPrice,
+        orderTime: orderTime,
+        paymentId: paymentResponse.razorpay_payment_id,
+      };
+
+      const mongoDBResponse = await axios.post(
+        'http://your-mongodb-api-url/orders',
         orderData,
       );
 
@@ -46,16 +101,13 @@ const PaymentScreen = ({route, navigation}) => {
       setTimeout(() => {
         setOrderPlaced(false);
         dispatch(removeAllItems());
-        navigation.navigate('Orders', {
-          orderTime: orderTime,
-        });
+        navigation.navigate('Orders');
       }, 3000);
     } catch (error) {
-      console.error('Error:', error);
+      console.error('Payment Error:', error);
       setProcessingOrder(false);
     }
   };
-
   const handlePaymentOptionSelect = option => {
     setSelectedOption(option);
   };
