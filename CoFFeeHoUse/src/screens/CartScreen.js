@@ -19,6 +19,7 @@ import {
   decreaseQuantity,
   removeItem,
 } from '../Redux/cartSlice';
+import Header from '../components/ToolBar';
 
 const CartScreen = ({navigation}) => {
   const dispatch = useDispatch();
@@ -98,6 +99,7 @@ const CartScreen = ({navigation}) => {
 
   return (
     <View style={styles.container}>
+      <Header title={'My Cart'} />
       {cart.items.length === 0 ? (
         <View style={styles.emptyCartContainer}>
           <Text style={styles.emptyCartText}>Your cart is empty</Text>

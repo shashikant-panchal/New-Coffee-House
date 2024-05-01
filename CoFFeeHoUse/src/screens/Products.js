@@ -33,7 +33,7 @@ const ProductsScreen = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-      <Header />
+      <Header title={'Products'} />
       <FlatList
         data={Data}
         renderItem={renderItem}

@@ -26,21 +26,15 @@ const HomeStack = () => (
 );
 
 const CartStack = () => (
-  <Stack.Navigator>
+  <Stack.Navigator screenOptions={{headerShown: false}}>
     <Stack.Screen name="Cart" component={CartScreen} />
     <Stack.Screen name="Payment" component={PaymentScreen} />
     <Stack.Screen name="Orders" component={OrderScreen} />
   </Stack.Navigator>
 );
 
-// const OrderStack = () => (
-//   <Stack.Navigator>
-//     <Stack.Screen name="Orders" component={OrderScreen} />
-//   </Stack.Navigator>
-// );
-
 const ProfileStack = () => (
-  <Stack.Navigator>
+  <Stack.Navigator screenOptions={{headerShown: false}}>
     <Stack.Screen name="Profile" component={ProfileScreen} />
     <Stack.Screen name="Register" component={Register} />
     <Stack.Screen name="AboutUs" component={AboutUs} />

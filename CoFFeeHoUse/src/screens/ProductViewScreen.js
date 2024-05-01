@@ -52,7 +52,7 @@ const ProductView = ({route}) => {
 
   return (
     <View style={styles.container}>
-      <Header />
+      <Header title={'Product View'} />
       <ProductViewUI />
     </View>
   );

@@ -1,7 +1,7 @@
 import React, {useRef, useEffect} from 'react';
 import {Text, StyleSheet, Animated, Easing} from 'react-native';
 
-const Header = () => {
+const Header = ({title}) => {
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
@@ -15,7 +15,7 @@ const Header = () => {
 
   return (
     <Animated.View style={[styles.headerContainer, {opacity: fadeAnim}]}>
-      <Text style={styles.headerText}>Coffee House</Text>
+      <Text style={styles.headerText}>{title}</Text>
     </Animated.View>
   );
 };

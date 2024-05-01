@@ -68,7 +68,7 @@ const HomeScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Header />
+      <Header title={'Coffee House'} />
       <View style={styles.searchContainer}>
         <Icon name="search" size={20} color="#888" />
         <TextInput
