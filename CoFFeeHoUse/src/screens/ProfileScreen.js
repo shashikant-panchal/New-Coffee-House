@@ -142,16 +142,17 @@ const ProfileScreen = () => {
                 style={styles.item}
                 onPress={() => navigation.navigate('Orders')}>
                 <Text style={styles.itemText}>Order History</Text>
+                <Divider style={styles.divider} />
               </TouchableOpacity>
-              <Divider style={styles.divider} />
               <TouchableOpacity style={styles.item} onPress={shareApp}>
                 <Text style={styles.itemText}>Share App</Text>
+                <Divider style={styles.divider} />
               </TouchableOpacity>
-              <Divider style={styles.divider} />
               <TouchableOpacity
                 style={styles.item}
                 onPress={() => navigation.navigate('AboutUs')}>
                 <Text style={styles.itemText}>About Us</Text>
+                <Divider style={styles.divider} />
               </TouchableOpacity>
               <Divider style={styles.divider} />
               <View style={styles.signOutButton}>
@@ -160,7 +161,7 @@ const ProfileScreen = () => {
                   onPress={() => handleSignOut()}
                   color="#8B4513"
                   labelStyle={styles.signOutButtonText}
-                  style={{padding: 5, borderRadius:7}}>
+                  style={{padding: 5, borderRadius: 7}}>
                   Sign Out
                 </Button>
               </View>
@@ -275,7 +276,7 @@ const styles = StyleSheet.create({
   container1: {
     backgroundColor: '#fff',
     paddingHorizontal: 20,
-    padding: 70,
+    padding: 65,
   },
   profileInfo: {
     alignItems: 'center',
