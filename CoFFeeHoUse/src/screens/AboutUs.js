@@ -1,10 +1,11 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
+import Header from '../components/ToolBar';
 
 const AboutUsScreen = () => {
   return (
     <View style={styles.container}>
-      <Text style={styles.heading}>About Us</Text>
+      <Header title={'About Us'} />
       <View style={styles.contentContainer}>
         <Text style={styles.contentText}>
           Welcome to Coffee House, your go-to app for all things coffee! Whether
@@ -31,8 +32,6 @@ const AboutUsScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
     backgroundColor: '#F7E8D0',
   },
   heading: {
@@ -42,7 +41,10 @@ const styles = StyleSheet.create({
     color: '#4A4039',
   },
   contentContainer: {
-    width: '80%',
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding:20
   },
   contentText: {
     fontSize: 16,

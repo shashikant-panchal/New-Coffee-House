@@ -14,6 +14,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {Avatar, Button, Divider, List} from 'react-native-paper';
+import Header from '../components/ToolBar';
 
 const ProfileScreen = () => {
   const navigation = useNavigation();
@@ -40,7 +41,7 @@ const ProfileScreen = () => {
   const handleLogin = async () => {
     console.log('Login request payload:', {email, password});
     try {
-      const apiUrl = 'http://192.168.0.110:3000/api/login';
+      const apiUrl = 'http://192.168.1.34:3000/api/login';
       const response = await axios.post(apiUrl, {
         email,
         password,
@@ -86,84 +87,88 @@ const ProfileScreen = () => {
   };
 
   return (
-    <ImageBackground
-      source={{
-        uri: 'https://img.freepik.com/free-photo/brown-concrete-wall-with-scratches-vector_53876-143109.jpg',
-      }}
-      style={styles.background}
-      resizeMode="cover">
-      <View style={styles.container}>
-        {!user ? (
-          <>
-            <Text style={styles.title}>Coffee Login</Text>
-            <Text style={styles.label}>Email</Text>
-            <TextInput
-              style={styles.input}
-              value={email}
-              onChangeText={text => setEmail(text)}
-            />
-
-            <Text style={styles.label}>Password</Text>
-            <TextInput
-              style={styles.input}
-              secureTextEntry={true}
-              value={password}
-              onChangeText={text => setPassword(text)}
-            />
-
-            <TouchableOpacity style={styles.button} onPress={handleLogin}>
-              <Text style={styles.buttonText}>Login</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={styles.registerButton}
-              onPress={handleRegisterNavigation}>
-              <Text style={styles.registerText}>
-                Don't have an account? Register
-              </Text>
-            </TouchableOpacity>
-          </>
-        ) : (
-          <View style={styles.container1}>
-            <View style={styles.profileInfo}>
-              <Avatar.Text
-                size={100}
-                label={user.name.charAt(0)}
-                style={styles.avatar}
+    <>
+      <Header title={'Profile'} />
+      <ImageBackground
+        source={{
+          uri: 'https://img.freepik.com/free-photo/brown-concrete-wall-with-scratches-vector_53876-143109.jpg',
+        }}
+        style={styles.background}
+        resizeMode="cover">
+        <View style={styles.container}>
+          {!user ? (
+            <>
+              <Text style={styles.title}>Coffee Login</Text>
+              <Text style={styles.label}>Email</Text>
+              <TextInput
+                style={styles.input}
+                value={email}
+                onChangeText={text => setEmail(text)}
               />
-              <Text style={styles.name}>{user.name}</Text>
-              <Text style={styles.mobile}>{user.phoneNumber}</Text>
+
+              <Text style={styles.label}>Password</Text>
+              <TextInput
+                style={styles.input}
+                secureTextEntry={true}
+                value={password}
+                onChangeText={text => setPassword(text)}
+              />
+
+              <TouchableOpacity style={styles.button} onPress={handleLogin}>
+                <Text style={styles.buttonText}>Login</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.registerButton}
+                onPress={handleRegisterNavigation}>
+                <Text style={styles.registerText}>
+                  Don't have an account? Register
+                </Text>
+              </TouchableOpacity>
+            </>
+          ) : (
+            <View style={styles.container1}>
+              <View style={styles.profileInfo}>
+                <Avatar.Text
+                  size={100}
+                  label={user.name.charAt(0)}
+                  style={styles.avatar}
+                />
+                <Text style={styles.name}>{user.name}</Text>
+                <Text style={styles.mobile}>{user.phoneNumber}</Text>
+              </View>
+              <Divider style={styles.divider} />
+              <TouchableOpacity
+                style={styles.item}
+                onPress={() => navigation.navigate('Orders')}>
+                <Text style={styles.itemText}>Order History</Text>
+              </TouchableOpacity>
+              <Divider style={styles.divider} />
+              <TouchableOpacity style={styles.item} onPress={shareApp}>
+                <Text style={styles.itemText}>Share App</Text>
+              </TouchableOpacity>
+              <Divider style={styles.divider} />
+              <TouchableOpacity
+                style={styles.item}
+                onPress={() => navigation.navigate('AboutUs')}>
+                <Text style={styles.itemText}>About Us</Text>
+              </TouchableOpacity>
+              <Divider style={styles.divider} />
+              <View style={styles.signOutButton}>
+                <Button
+                  mode="contained"
+                  onPress={() => handleSignOut()}
+                  color="#8B4513"
+                  labelStyle={styles.signOutButtonText}
+                  style={{padding: 5, borderRadius:7}}>
+                  Sign Out
+                </Button>
+              </View>
             </View>
-            <Divider style={styles.divider} />
-            <TouchableOpacity
-              style={styles.item}
-              onPress={() => navigation.navigate('Orders')}>
-              <Text style={styles.itemText}>Order History</Text>
-            </TouchableOpacity>
-            <Divider style={styles.divider} />
-            <TouchableOpacity style={styles.item} onPress={shareApp}>
-              <Text style={styles.itemText}>Share App</Text>
-            </TouchableOpacity>
-            <Divider style={styles.divider} />
-            <TouchableOpacity
-              style={styles.item}
-              onPress={() => navigation.navigate('AboutUs')}>
-              <Text style={styles.itemText}>About Us</Text>
-            </TouchableOpacity>
-            <Divider style={styles.divider} />
-            <View style={styles.signOutButton}>
-              <Button
-                mode="contained"
-                onPress={() => handleSignOut()}
-                color="#8B4513"
-                labelStyle={styles.signOutButtonText}>
-                Sign Out
-              </Button>
-            </View>
-          </View>
-        )}
-      </View>
-    </ImageBackground>
+          )}
+        </View>
+      </ImageBackground>
+    </>
   );
 };
 
@@ -270,7 +275,7 @@ const styles = StyleSheet.create({
   container1: {
     backgroundColor: '#fff',
     paddingHorizontal: 20,
-    paddingTop: 40,
+    padding: 70,
   },
   profileInfo: {
     alignItems: 'center',
@@ -299,12 +304,13 @@ const styles = StyleSheet.create({
   itemText: {
     fontSize: 18,
     color: '#8B4513',
+    fontWeight: 'bold',
   },
   signOutButton: {
-    marginTop: 'auto',
+    // marginTop: 'auto',
   },
   signOutButtonText: {
-    fontSize: 18,
+    fontSize: 20,
   },
 });
 

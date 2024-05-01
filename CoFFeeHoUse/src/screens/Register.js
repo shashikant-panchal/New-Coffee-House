@@ -26,7 +26,7 @@ const Register = () => {
     }
 
     try {
-      const apiUrl = 'http://192.168.0.110:3000/api/users';
+      const apiUrl = 'http://192.168.1.34:3000/api/users';
 
       const response = await axios.post(apiUrl, {
         name,
@@ -38,7 +38,7 @@ const Register = () => {
       console.log('User data saved:', response.data);
 
       Alert.alert('Success', 'User registration successful!');
-      navigation.navigate('Login', {name, phoneNumber});
+      navigation.navigate('Profile', {name, phoneNumber});
       setName('');
       setEmail('');
       setPhoneNumber('');

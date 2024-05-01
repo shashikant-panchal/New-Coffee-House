@@ -11,7 +11,7 @@ app.use(cors());
 app.use(bodyParser.json());
 
 mongoose.connect(
-  'mongodb+srv://coffeeshop:coffeeshop@coffeeshop.ewl9vjy.mongodb.net/your-database-name',
+  'mongodb+srv://coffeeshop:coffeeshop@coffeeshop.ewl9vjy.mongodb.net/',
   {
     useNewUrlParser: true,
     useUnifiedTopology: true,

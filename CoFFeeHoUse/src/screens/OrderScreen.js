@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, Image, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import axios from 'axios';
+import Header from '../components/ToolBar';
 
 const OrderScreen = ({ route }) => {
   const cartItems = route && route.params ? route.params.cartItems : [];
@@ -13,7 +14,7 @@ const OrderScreen = ({ route }) => {
 
   const fetchOrders = async () => {
     try {
-      const response = await axios.get('http://192.168.0.110:3000/api/orders');
+      const response = await axios.get('http://192.168.1.34:3000/api/orders');
       setOrders(response.data.orders);
     } catch (error) {
       console.error('Error fetching orders:', error);
@@ -22,7 +23,7 @@ const OrderScreen = ({ route }) => {
 
   const cancelOrder = async (orderId) => {
     try {
-      await axios.delete(`http://192.168.0.110:3000/api/orders/${orderId}`);
+      await axios.delete(`http://192.168.1.34:3000/api/orders/${orderId}`);
       fetchOrders(); // Refresh orders after cancellation
       Alert.alert('Order Cancelled Successfully');
     } catch (error) {
@@ -75,7 +76,7 @@ const OrderScreen = ({ route }) => {
         />
       ) : (
         <View style={styles.orderHistoryContainer}>
-          <Text style={styles.orderHistoryTitle}>Orders History</Text>
+          <Header title={'Order History'} />
           <FlatList
             showsVerticalScrollIndicator={false}
             data={orders}
@@ -92,8 +93,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    paddingHorizontal: 20,
-    paddingTop: 20,
   },
   orderHistoryContainer: {
     flex: 1,
