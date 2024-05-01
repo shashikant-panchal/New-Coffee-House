@@ -60,10 +60,8 @@ const ProductView = ({route}) => {
 
 const styles = StyleSheet.create({
   container: {
-    // flex: 1,
+    flex: 1,
     backgroundColor: '#f8f8f8',
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   card: {
     backgroundColor: '#fff',
