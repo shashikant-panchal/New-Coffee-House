@@ -11,6 +11,7 @@ const ProductsScreen = ({navigation}) => {
       image: product.image,
       name: product.name,
       size: product.grams,
+      description: product.description,
       price: product.price.toFixed(2),
     });
   };

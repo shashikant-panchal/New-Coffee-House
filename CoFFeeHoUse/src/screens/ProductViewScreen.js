@@ -1,12 +1,19 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+} from 'react-native';
 import Header from '../components/ToolBar';
-import { useDispatch, useSelector } from 'react-redux';
-import { addToCart } from '../Redux/cartSlice';
-import { useNavigation } from '@react-navigation/native';
+import {useDispatch, useSelector} from 'react-redux';
+import {addToCart} from '../Redux/cartSlice';
+import {useNavigation} from '@react-navigation/native';
 
-const ProductView = ({ route }) => {
-  const { image, name, size, price } = route.params;
+const ProductView = ({route}) => {
+  const {image, name, size, price, description} = route.params;
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
@@ -24,27 +31,36 @@ const ProductView = ({ route }) => {
     navigation.navigate('Cart');
   };
 
+  const ProductViewUI = () => {
+    return (
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <View style={styles.card}>
+          <Image source={{uri: image}} style={styles.image} />
+          <Text style={styles.name}>{name}</Text>
+          <Text style={styles.size}>Size: {size}ml</Text>
+          <Text style={styles.price}>₹{price}</Text>
+          <Text style={styles.description}>{description}</Text>
+          <TouchableOpacity
+            style={styles.buttonContainer}
+            onPress={handleAddToCart}>
+            <Text style={styles.buttonText}>Add to Cart</Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+    );
+  };
+
   return (
     <View style={styles.container}>
       <Header />
-      <View style={styles.card}>
-        <Image source={{ uri: image }} style={styles.image} />
-        <Text style={styles.name}>{name}</Text>
-        <Text style={styles.size}>Size: {size}</Text>
-        <Text style={styles.price}>₹{price}</Text>
-        <TouchableOpacity
-          style={styles.buttonContainer}
-          onPress={handleAddToCart}>
-          <Text style={styles.buttonText}>Add to Cart</Text>
-        </TouchableOpacity>
-      </View>
+      <ProductViewUI />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    // flex: 1,
     backgroundColor: '#f8f8f8',
     alignItems: 'center',
     justifyContent: 'center',
@@ -78,15 +94,21 @@ const styles = StyleSheet.create({
     color: '#333',
   },
   size: {
-    fontSize: 20,
+    fontSize: 17,
     color: '#555',
     marginBottom: 12,
     textAlign: 'center',
   },
   price: {
-    fontSize: 24,
+    fontSize: 20,
     color: 'green',
     marginBottom: 16,
+  },
+  description: {
+    fontSize: 17,
+    color: 'black',
+    lineHeight: 28,
+    fontWeight: '600',
   },
   buttonContainer: {
     backgroundColor: '#FF6F61',
