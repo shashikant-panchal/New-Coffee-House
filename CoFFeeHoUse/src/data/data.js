@@ -2,7 +2,7 @@ export const Data = [
   {
     id: 1,
     name: 'Espresso',
-    image: 'https://upload.wikimedia.org/wikipedia/commons/b/bb/Espresso.jpg',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Tazzina_di_caff%C3%A8_a_Ventimiglia.jpg/1280px-Tazzina_di_caff%C3%A8_a_Ventimiglia.jpg',
     price: 199.99,
     grams: 30,
     description: 'A concentrated coffee beverage brewed by forcing hot water under pressure through finely-ground coffee beans.'
