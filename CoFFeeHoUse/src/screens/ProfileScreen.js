@@ -41,7 +41,7 @@ const ProfileScreen = () => {
   const handleLogin = async () => {
     console.log('Login request payload:', {email, password});
     try {
-      const apiUrl = 'http://192.168.1.34:3000/api/login';
+      const apiUrl = 'https://coffee-house-back-end.vercel.app/api/login';
       const response = await axios.post(apiUrl, {
         email,
         password,

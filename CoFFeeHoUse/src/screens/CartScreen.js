@@ -81,7 +81,7 @@ const CartScreen = ({navigation}) => {
         paymentId: paymentResponse.razorpay_payment_id,
       };
       const mongoDBResponse = await axios.post(
-        'http://192.168.1.34:3000/api/orders',
+        'https://coffee-house-back-end.vercel.app/api/orders',
         orderData,
       );
       dispatch(removeAllItems());

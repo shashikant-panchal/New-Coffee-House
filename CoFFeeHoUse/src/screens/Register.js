@@ -26,7 +26,7 @@ const Register = () => {
     }
 
     try {
-      const apiUrl = 'http://192.168.1.34:3000/api/users';
+      const apiUrl = 'https://coffee-house-back-end.vercel.app/api/users';
 
       const response = await axios.post(apiUrl, {
         name,
