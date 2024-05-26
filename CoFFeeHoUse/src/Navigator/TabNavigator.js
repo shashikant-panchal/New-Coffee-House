@@ -80,16 +80,16 @@ const TabNavigator = () => {
           ),
         }}
       />
-      {/* <Tab.Screen
+      <Tab.Screen
         name="Orders"
-        component={OrderStack}
+        component={OrderScreen}
         options={{
           tabBarLabel: 'Orders',
           tabBarIcon: ({ color, size }) => (
             <Icon name="list" color={color} size={size} />
           ),
         }}
-      /> */}
+      />
       <Tab.Screen
         name="Profile"
         component={ProfileStack}

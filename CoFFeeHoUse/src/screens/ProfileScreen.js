@@ -8,6 +8,7 @@ import {
   Alert,
   ImageBackground,
   Share,
+  ActivityIndicator,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -22,6 +23,7 @@ const ProfileScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [user, setUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     retrieveUserData();
@@ -39,6 +41,7 @@ const ProfileScreen = () => {
   };
 
   const handleLogin = async () => {
+    setIsLoading(true);
     console.log('Login request payload:', {email, password});
     try {
       const apiUrl = 'https://coffee-house-back-end.vercel.app/api/login';
@@ -62,6 +65,8 @@ const ProfileScreen = () => {
       Alert.alert('Error', `Login failed: ${error.response.data.error}`, [
         {text: 'OK', onPress: () => console.log('OK Pressed')},
       ]);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -114,9 +119,13 @@ const ProfileScreen = () => {
                 onChangeText={text => setPassword(text)}
               />
 
-              <TouchableOpacity style={styles.button} onPress={handleLogin}>
-                <Text style={styles.buttonText}>Login</Text>
-              </TouchableOpacity>
+              {isLoading ? (
+                <ActivityIndicator size="large" color="#4A2B18" />
+              ) : (
+                <TouchableOpacity style={styles.button} onPress={handleLogin}>
+                  <Text style={styles.buttonText}>Login</Text>
+                </TouchableOpacity>
+              )}
 
               <TouchableOpacity
                 style={styles.registerButton}

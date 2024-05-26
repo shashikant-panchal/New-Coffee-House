@@ -1,29 +1,46 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, Image, StyleSheet, TouchableOpacity, Alert } from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {
+  View,
+  Text,
+  FlatList,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  Alert,
+  ActivityIndicator,
+} from 'react-native';
 import axios from 'axios';
 import Header from '../components/ToolBar';
 
-const OrderScreen = ({ route }) => {
+const OrderScreen = ({route}) => {
   const cartItems = route && route.params ? route.params.cartItems : [];
 
   const [orders, setOrders] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     fetchOrders();
   }, []);
 
   const fetchOrders = async () => {
+    setIsLoading(true);
     try {
-      const response = await axios.get('https://coffee-house-back-end.vercel.app/api/orders');
+      const response = await axios.get(
+        'https://coffee-house-back-end.vercel.app/api/orders',
+      );
       setOrders(response.data.orders);
     } catch (error) {
       console.error('Error fetching orders:', error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  const cancelOrder = async (orderId) => {
+  const cancelOrder = async orderId => {
     try {
-      await axios.delete(`https://coffee-house-back-end.vercel.app/api/orders/${orderId}`);
+      await axios.delete(
+        `https://coffee-house-back-end.vercel.app/api/orders/${orderId}`,
+      );
       fetchOrders(); // Refresh orders after cancellation
       Alert.alert('Order Cancelled Successfully');
     } catch (error) {
@@ -32,13 +49,13 @@ const OrderScreen = ({ route }) => {
     }
   };
 
-  const renderOrderItem = ({ item }) => {
+  const renderOrderItem = ({item}) => {
     return (
       <View style={styles.orderContainer}>
         {item.items.map(product => (
           <View key={product.id} style={styles.orderItemContainer}>
             <Image
-              source={{ uri: product.image }}
+              source={{uri: product.image}}
               style={styles.orderItemImage}
             />
             <View style={styles.orderItemDetails}>
@@ -49,17 +66,19 @@ const OrderScreen = ({ route }) => {
               <Text style={styles.orderItemQuantity}>
                 Quantity: {product.quantity}
               </Text>
-              <Text style={{ fontWeight: 'bold' }}>Order ID: {item._id}</Text>
+              <Text style={{fontWeight: 'bold'}}>Order ID: {item._id}</Text>
             </View>
           </View>
         ))}
-        <Text style={{ textAlign: 'right' }}>
+        <Text style={{textAlign: 'right'}}>
           Order Time: {new Date(item.orderTime).toLocaleString()}
         </Text>
-        <Text style={{ textAlign: 'right' }}>
+        <Text style={{textAlign: 'right'}}>
           Total Amount: ₹{item.totalAmount}
         </Text>
-        <TouchableOpacity onPress={() => cancelOrder(item._id)} style={styles.cancelButton}>
+        <TouchableOpacity
+          onPress={() => cancelOrder(item._id)}
+          style={styles.cancelButton}>
           <Text style={styles.cancelButtonText}>Cancel Order</Text>
         </TouchableOpacity>
       </View>
@@ -77,12 +96,19 @@ const OrderScreen = ({ route }) => {
       ) : (
         <View style={styles.orderHistoryContainer}>
           <Header title={'Order History'} />
-          <FlatList
-            showsVerticalScrollIndicator={false}
-            data={orders}
-            keyExtractor={item => item._id}
-            renderItem={renderOrderItem}
-          />
+          {isLoading ? (
+            <ActivityIndicator
+              size="large"
+              color="#4A2B18"
+              style={styles.loadingIndicator}
+            />
+          ) : (
+            <FlatList
+              data={orders}
+              renderItem={renderOrderItem}
+              keyExtractor={item => item._id}
+            />
+          )}
         </View>
       )}
     </View>
@@ -148,6 +174,11 @@ const styles = StyleSheet.create({
   cancelButtonText: {
     color: '#fff',
     fontWeight: 'bold',
+  },
+  loadingIndicator: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 
