@@ -23,7 +23,7 @@ const OrderScreen = ({ route }) => {
 
   const cancelOrder = async (orderId) => {
     try {
-      await axios.delete(`http://192.168.1.34:3000/api/orders/${orderId}`);
+      await axios.delete(`https://coffee-house-back-end.vercel.app/api/orders/${orderId}`);
       fetchOrders(); // Refresh orders after cancellation
       Alert.alert('Order Cancelled Successfully');
     } catch (error) {
