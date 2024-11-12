@@ -2,7 +2,7 @@ import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {useSelector} from 'react-redux';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons'; // Updated to MaterialCommunityIcons
 
 import HomeScreen from '../screens/HomeScreen';
 import CartScreen from '../screens/CartScreen';
@@ -52,21 +52,31 @@ const TabNavigator = () => {
   return (
     <Tab.Navigator
       screenOptions={({route}) => ({
-        tabBarBadge: route.name === 'Cart' ? cartItemCount : null,
-        tabBarActiveTintColor: 'brown',
+        tabBarBadge:
+          route.name === 'Cart' && cartItemCount > 0 ? cartItemCount : null,
+        tabBarActiveTintColor: '#FF6F61', // Vibrant red for active tab
+        tabBarInactiveTintColor: '#A8A8A8', // Light gray for inactive tab
+        tabBarStyle: {
+          backgroundColor: '#FFFFFF', // Clean white background
+          borderTopWidth: 0, // No border at the top
+          elevation: 10, // Add elevation for shadow effect
+          height: 80, // Increased height for the tab bar
+          paddingBottom: 10, // Padding for a little more space
+        },
         headerShown: false,
         labelStyle: {
-          fontSize: 12,
+          fontSize: 16, // Increased font size for larger labels
+          fontWeight: 'bold', // Bold labels
+          marginTop: 5, // Add some space between icon and label
         },
       })}>
       <Tab.Screen
         name="Home"
         component={HomeStack}
         options={{
-          headerShown: false,
           tabBarLabel: 'Home',
           tabBarIcon: ({color, size}) => (
-            <Icon name="home" color={color} size={size} />
+            <Icon name="home" color={color} size={size * 1.5} /> // Larger icon
           ),
         }}
       />
@@ -76,7 +86,7 @@ const TabNavigator = () => {
         options={{
           tabBarLabel: 'Cart',
           tabBarIcon: ({color, size}) => (
-            <Icon name="shopping-cart" color={color} size={size} />
+            <Icon name="cart" color={color} size={size * 1.5} /> // Larger icon
           ),
         }}
       />
@@ -85,8 +95,8 @@ const TabNavigator = () => {
         component={OrderScreen}
         options={{
           tabBarLabel: 'Orders',
-          tabBarIcon: ({ color, size }) => (
-            <Icon name="list" color={color} size={size} />
+          tabBarIcon: ({color, size}) => (
+            <Icon name="clipboard-list" color={color} size={size * 1.5} /> // Larger icon
           ),
         }}
       />
@@ -96,7 +106,7 @@ const TabNavigator = () => {
         options={{
           tabBarLabel: 'Profile',
           tabBarIcon: ({color, size}) => (
-            <Icon name="user" color={color} size={size} />
+            <Icon name="account" color={color} size={size * 1.5} /> // Larger icon
           ),
         }}
       />

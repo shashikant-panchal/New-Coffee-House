@@ -106,6 +106,7 @@ const ProfileScreen = () => {
               <Text style={styles.title}>Coffee Login</Text>
               <Text style={styles.label}>Email</Text>
               <TextInput
+                placeholderTextColor={'black'}
                 style={styles.input}
                 value={email}
                 onChangeText={text => setEmail(text)}
@@ -113,6 +114,7 @@ const ProfileScreen = () => {
 
               <Text style={styles.label}>Password</Text>
               <TextInput
+                placeholderTextColor={'black'}
                 style={styles.input}
                 secureTextEntry={true}
                 value={password}
@@ -298,6 +300,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     marginTop: 10,
+    color: 'black',
   },
   mobile: {
     fontSize: 16,

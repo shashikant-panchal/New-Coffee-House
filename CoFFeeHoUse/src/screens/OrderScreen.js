@@ -66,14 +66,16 @@ const OrderScreen = ({route}) => {
               <Text style={styles.orderItemQuantity}>
                 Quantity: {product.quantity}
               </Text>
-              <Text style={{fontWeight: 'bold'}}>Order ID: {item._id}</Text>
+              <Text style={{fontWeight: 'bold', color: 'black'}}>
+                Order ID: {item._id}
+              </Text>
             </View>
           </View>
         ))}
-        <Text style={{textAlign: 'right'}}>
+        <Text style={{textAlign: 'right', color: 'black'}}>
           Order Time: {new Date(item.orderTime).toLocaleString()}
         </Text>
-        <Text style={{textAlign: 'right'}}>
+        <Text style={{textAlign: 'right', color: 'black'}}>
           Total Amount: ₹{item.totalAmount}
         </Text>
         <TouchableOpacity
@@ -154,6 +156,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 5,
+    color: 'black',
   },
   orderItemPrice: {
     fontSize: 16,

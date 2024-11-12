@@ -216,6 +216,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 8,
+    color: 'black',
   },
   price: {
     fontSize: 16,
@@ -242,6 +243,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     marginHorizontal: 8,
+    color: 'black',
   },
   removeButton: {
     marginLeft: 'auto',
@@ -268,6 +270,7 @@ const styles = StyleSheet.create({
   totalItemsText: {
     fontSize: 16,
     fontWeight: 'bold',
+    color: 'black',
   },
   totalPriceContainer: {
     marginBottom: 16,

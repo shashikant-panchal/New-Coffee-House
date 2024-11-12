@@ -72,6 +72,7 @@ const HomeScreen = () => {
       <View style={styles.searchContainer}>
         <Icon name="search" size={20} color="#888" />
         <TextInput
+          placeholderTextColor={'black'}
           style={styles.searchInput}
           placeholder="Search Coffee..."
           value={searchQuery}
